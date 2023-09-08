@@ -19,6 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_service: ^0.0.1+1
+  firebase_core: ^2.13.1
   
   #Firebase
   
@@ -32,11 +34,13 @@ dev_dependencies:
   lint: ^1.0.0
 
 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -77,6 +81,11 @@ flutter:
   - assets/images/bottom_navigation_bar/tab_store.png
   - assets/images/bottom_navigation_bar/tab_stories_selected.png
   - assets/images/bottom_navigation_bar/tab_stories.png
+  - assets/images/CodeHub_Logo.png
+  - assets/images/LOGO_MAIN.png
+  - assets/images/Bunny_monitor_logo.gif
+  - assets/images/Backend.gif
+  - assets/images/456.gif
   
   
   #  - images/a_dot_ham.jpeg
@@ -92,12 +101,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts:
+    - family: Futura
+      fonts:
+       - asset: fonts/ofont.ru_Futura Md.ttf
+    - family: Bebas
+      fonts:
+        - asset: fonts/BebasNeue-Regular.ttf
+    - family: Feather
+      fonts:
+        - asset: fonts/feather_bold.ttf
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
