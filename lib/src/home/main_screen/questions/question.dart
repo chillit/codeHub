@@ -147,6 +147,9 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
+                    setState(() {
+                      selectedOptionIndex = null;
+                    });
                     widget.onNextQuestion(); // Перейти к следующему вопросу
                   },
                   child: Text('Next Question'),
@@ -329,6 +332,7 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
+                    answerController.clear();
                     widget.onNextQuestion(); // Перейти к следующему вопросу
                   },
                   child: Text('Next Question'),

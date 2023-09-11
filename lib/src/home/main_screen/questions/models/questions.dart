@@ -28,6 +28,12 @@ List<Question> questions = [
     correctInputAns: 'black',
   ),
   Question(
+    question: '3. What is your favorite color?',
+    correctAnswerIndex: null,
+    questionType: QuestionType.textInput,
+    correctInputAns: 'black',
+  ),
+  Question(
     question: '4. Which planet is known as the Red Planet?',
     correctAnswerIndex: 0,
     options: [
