@@ -85,7 +85,12 @@ flutter:
   - assets/images/LOGO_MAIN.png
   - assets/images/Bunny_monitor_logo.gif
   - assets/images/Backend.gif
-  - assets/images/456.gif
+  - assets/images/Small_Logo.png
+  - assets/images/Python.png
+  - assets/images/C_sharp.png
+  - assets/images/C+++.png
+  - assets/images/Javascript.png
+  - assets/images/Background.png
   
   
   #  - images/a_dot_ham.jpeg
