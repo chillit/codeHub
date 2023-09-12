@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
             child: ElevatedButton(
               onPressed:
                   (){
-
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LogINaccount()));
                   },
               child: Text('ALREADY HAVE AN ACCOUNT?',style:
                 TextStyle(
