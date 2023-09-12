@@ -1,136 +1,96 @@
-import 'package:duolingo/src/components/button.dart';
-import 'package:duolingo/src/components/login_text_field.dart';
-import 'package:duolingo/src/firebase/api_response.dart';
-import 'package:duolingo/src/firebase/firebase_service.dart';
-import 'package:duolingo/src/home/main_screen/home.dart';
+import 'package:duolingo/src/pages/create_account.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key key}) : super(key: key);
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  static final GlobalKey _formKey = GlobalKey<FormState>();
-  final TextEditingController _controllerLogin = TextEditingController();
-  final TextEditingController _controllerPassword = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    Future _onClickGoogle() async {
-      final FirebaseService service = FirebaseService();
-      ApiResponse response = await service.loginGoogle();
-
-      if (response.ok) {
-        await Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
-      }
-    }
-
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, BoxConstraints constraints) =>
-           Form(
-            key: _formKey,
-            child: Container(
-              color: Colors.white,
-              height: constraints.maxHeight,
-              width: constraints.maxWidth,
-              padding: const EdgeInsets.only(
-                  top: 60, left: 16, right: 16, bottom: 16),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Insira seus dados",
-                      style: TextStyle(
-                          color: Colors.grey.shade400,
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    LoginTextField(
-                      context,
-                      "Usuário ou email",
-                      controller: _controllerLogin,
-                    ),
-                    LoginTextField(
-                      context,
-                      "Senha",
-                      controller: _controllerPassword,
-                      obscure: true,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Button(
-                      "ENTRAR",
-                      color: const Color(0xFF1AB1F6),
-                      colorText: Colors.white,
-                      widget: 350,
-                      onPressed: () {},
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Text(
-                        "ESQUECI A SENHA",
-                        style: TextStyle(
-                          color: Colors.lightBlueAccent,
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: (constraints.maxHeight) / 3.5),
-                    Container(
-                        margin: const EdgeInsets.all(16),
-                        height: 60,
-                        width: constraints.maxWidth,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey.shade100,
-                          ),
-                          onPressed: _onClickGoogle,
-                          child: const Text("Sign in with Google"),
-                        )),
-                    const SizedBox(height: 12),
-                    Container(
-                      margin: const EdgeInsets.all(8),
-                      child: const Text.rich(
-                        TextSpan(
-                          text:
-                          "Ao entrar no Duolingo, você concorda com os nossos",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0xFFb2b2b0),
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: " Termos e ",
-                                style: TextStyle(
-                                    color: Color(0xFFa5a5a3),
-                                    fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: "Política de Privacidade",
-                                style: TextStyle(
-                                    color: Color(0xFFa5a5a3),
-                                    fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+      backgroundColor: Color.fromRGBO(221,196,173, 0.5),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/LOGO_MAIN.png',height: 150,width: MediaQuery.of(context).size.width,)],
+          ),
+          Image.asset('assets/images/Backend.gif',height: 280,width: 500,),
+          SizedBox(height: 20,),
+
+          Text('The free, fun, and \n effective way to learn  programming!',
+          style: TextStyle(
+            fontFamily: 'Feather',
+            fontWeight: FontWeight.bold,
+            fontSize: 32,
+            color: Colors.black54
+          ),
+              textAlign: TextAlign.center
+          ),
+          SizedBox(height: 20,),
+          Container(
+            width: double.infinity,
+            height: 50,
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: ElevatedButton(
+              onPressed:
+                  (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ChooseLanguage()));
+                  },
+              child: Text('GET STARTED',
+              style: TextStyle(
+                fontFamily: 'Feather',
+                fontSize: 13,
+                color: Color.fromRGBO(221,196,173, 1),
+              ),),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromRGBO(126,74,59, 1),
+                elevation: 5, // shadow elevation// button padding
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // button border radius
                 ),
               ),
             ),
           ),
-      ),
+          SizedBox(height: 20,),
+          Container(
+            width: double.infinity,
+            height: 50,
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: ElevatedButton(
+              onPressed:
+                  (){
+
+                  },
+              child: Text('ALREADY HAVE AN ACCOUNT?',style:
+                TextStyle(
+                  fontFamily: 'Feather',
+                  fontSize: 13,
+                  color: Color.fromRGBO(221,196,173, 1),
+                ),),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromRGBO(126,74,59, 1),
+                elevation: 5, // shadow elevation// button padding
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // button border radius
+                ),
+
+              ),
+            ),
+          ),
+
+
+
+        ],
+      )
     );
   }
 }
+
+

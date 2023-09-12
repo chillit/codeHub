@@ -1,3 +1,5 @@
+import 'package:duolingo/src/home/login/login_page.dart';
+import 'package:duolingo/src/pages/create_account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'src/home/login/welcome_screen.dart';
@@ -16,9 +18,9 @@ class MyApp extends StatelessWidget {
     ]); 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Duolingo",
+      title: "Code-Hub",
       theme: ThemeData(primaryColor: Colors.white),
-      home: Home(),
+      home: CreateUser(),
     );
   }
 }
