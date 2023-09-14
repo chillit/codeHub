@@ -1,9 +1,6 @@
 import 'package:duolingo/src/home/login/login_page.dart';
-import 'package:duolingo/src/pages/create_account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'src/home/login/welcome_screen.dart';
-import 'src/home/main_screen/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 

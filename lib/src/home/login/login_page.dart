@@ -48,6 +48,14 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   width: double.infinity,
                   height: 50,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 12,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]),
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
                     onPressed:
@@ -73,6 +81,14 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   width: double.infinity,
                   height: 50,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 12,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]),
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
                     onPressed:

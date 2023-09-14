@@ -20,6 +20,12 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_core: any
+  firebase_database: ^10.2.3
+  firebase_auth: ^4.4.2
+  cloud_firestore: 4.5.0
+  cloud_functions: ^4.3.3
+  email_validator:
+  awesome_dialog: ^3.1.0
   
   #Firebase
   
