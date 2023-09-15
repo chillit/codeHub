@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:duolingo/src/home/main_screen/home.dart';
 class ChooseLanguage extends StatefulWidget {
   const ChooseLanguage({Key key}) : super(key: key);
 
@@ -592,7 +592,7 @@ class _LogINaccountState extends State<LogINaccount> {
         email: emailcontroller.text.trim(),
         password: passwordcontroller.text.trim(),
       );
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
     } on
     FirebaseAuthException catch (e) {
       print(e.code);

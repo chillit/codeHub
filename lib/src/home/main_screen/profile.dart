@@ -2,6 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -9,32 +16,36 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final DatabaseReference _databaseReference =
-  FirebaseDatabase.instance.reference().child('users/dBrR5mUnFKhGu9gatXZTlw1odo82');
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  DatabaseReference _databaseReference;
 
   String name = '';
   int userPoints = 0;
   String rank = '';
   String language = '';
+
   @override
   void initState() {
     super.initState();
-    _getDataFromDatabase();
+    _getUserData();
   }
 
-  Future<void> _getDataFromDatabase() async {
+  Future<void> _getUserData() async {
     try {
-      final DatabaseEvent dataSnapshot = await _databaseReference.once();
-      final Map<dynamic, dynamic> data = dataSnapshot.snapshot.value;
-      print(data);
+      final user = _auth.currentUser;
+      if (user != null) {
+        _databaseReference = FirebaseDatabase.instance.reference().child('users/${user.uid}');
+        final dataSnapshot = await _databaseReference.once();
+        final Map<dynamic, dynamic> data = dataSnapshot.snapshot.value;
+        print(data);
 
-      setState(() {
-        name = data['Username'];
-        userPoints = data['points'];
-        rank = data['rank'];
-        language = data['language'];
-
-      });
+        setState(() {
+          name = data['Username'];
+          userPoints = data['points'];
+          rank = data['rank'];
+          language = data['language'];
+        });
+      }
     } catch (error) {
       print('Error: $error');
     }
