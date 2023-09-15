@@ -20,7 +20,8 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_core: any
-  
+  firebase_database: any
+  cloud_firestore: any
   #Firebase
   
   # The following adds the Cupertino Icons font to your application.
@@ -90,6 +91,15 @@ flutter:
   - assets/images/C+++.png
   - assets/images/Javascript.png
   - assets/images/Background.png
+  - assets/images/ranks/a.png
+  - assets/images/ranks/b.png
+  - assets/images/ranks/d.png
+  - assets/images/ranks/g.png
+  - assets/images/ranks/i.png
+  - assets/images/ranks/ir.png
+  - assets/images/ranks/p.png
+  - assets/images/ranks/r.png
+  - assets/images/ranks/s.png
   
   
   #  - images/a_dot_ham.jpeg

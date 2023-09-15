@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Code-Hub",
       theme: ThemeData(primaryColor: Colors.white),
-      home: LoginPage(),
+      home: Home(),
     );
   }
 }
