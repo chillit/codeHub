@@ -213,7 +213,9 @@ class _CreateUserState extends State<CreateUser> {
         'Username': fio,
         'email': email,
         'password': password,
-        'language': language
+        'language': language,
+        'points': 0,
+        'level': 0,
       });
 
       AwesomeDialog(
