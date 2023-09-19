@@ -55,7 +55,7 @@ class _ChooseLanguageState extends State<ChooseLanguage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SquareImageTextWidget(imageUrl: 'assets/images/Python.png',text: 'Python',language: 'Python',),
+                  SquareImageTextWidget(imageUrl: 'assets/images/Python.png',text: 'Python',language: 'python',),
                   SizedBox(width: 20,),
                   SquareImageTextWidget(imageUrl: 'assets/images/C+++.png',text: 'C++',language: 'C++')
                 ],),
@@ -63,7 +63,7 @@ class _ChooseLanguageState extends State<ChooseLanguage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SquareImageTextWidget(imageUrl: 'assets/images/Javascript.png',text: 'JavaScript',language:'JavaScript',),
+                  SquareImageTextWidget(imageUrl: 'assets/images/Javascript.png',text: 'JavaScript',language:'javaScript',),
                   SizedBox(width: 20,),
                   SquareImageTextWidget(imageUrl: 'assets/images/C_sharp.png',text: 'C#',language: 'C#',)
                 ],)
@@ -226,7 +226,7 @@ class _CreateUserState extends State<CreateUser> {
           showCloseIcon:false,
           title: 'You have successfully created an account!!',
           btnOkOnPress: (){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
           },
           btnOkColor: Colors.green
 

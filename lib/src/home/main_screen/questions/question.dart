@@ -1,8 +1,8 @@
-import 'package:duolingo/src/home/main_screen/questions/models/questions.dart';
 import 'package:flutter/material.dart';
 import 'package:duolingo/src/home/main_screen/questions/models/question_class.dart';
 import 'package:duolingo/src/home/main_screen/questions/models/result_screen.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 class QuestionScreen extends StatefulWidget {
   final List<Question> questionss;
 
@@ -24,8 +24,23 @@ class _QuestionScreenState extends State<QuestionScreen> {
   void initState() {
     super.initState();
     totalQuestionsCount = widget.questionss.length;
-    currentQuestions = List.from(questions);
+    currentQuestions = List.from(widget.questionss);
   }
+  void updatePointsInFirebase(String currentUserUID) {
+    final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
+
+    int pointsToAdd = 50;
+
+    databaseReference.child('users/$currentUserUID/points').once().then((DatabaseEvent snapshot) {
+
+      int currentValue = snapshot.snapshot.value ?? 0; // Если значение не существует, устанавливаем 0
+
+      int updatedValue = currentValue + pointsToAdd;
+      databaseReference.child('users/$currentUserUID/points').set(updatedValue);
+    });
+  }
+  User currentUser = FirebaseAuth.instance.currentUser;
+
 
   void goToNextQuestion() {
     if (currentQuestionIndex < currentQuestions.length - 1) {
@@ -47,7 +62,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
   Widget build(BuildContext context) {
     final question = currentQuestions[currentQuestionIndex];
 
-    if (allQuestionsAnswered) {
+    if (allQuestionsAnswered && currentUser != null) {
+      String currentUserUID = currentUser.uid;
+      updatePointsInFirebase(currentUserUID);
       return ResultScreen(score: correctAnswersCount, len: totalQuestionsCount);
     }
 
