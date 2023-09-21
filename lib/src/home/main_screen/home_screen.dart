@@ -37,8 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
       DatabaseEvent levelSnapshot = await levelRef.once();
       DatabaseEvent languageSnapshot = await languageRef.once();
-
-      // Установите значения по умолчанию, если данные отсутствуют
       userLevel = levelSnapshot.snapshot.value;
       userLanguage = languageSnapshot.snapshot.value?.toString() ?? '';
       fetchPythonQuestions(userLevel,userLanguage);
@@ -72,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       pythonQuestions.add(question);
     }
+    print(pythonQuestions);
 
     return pythonQuestions;
   }

@@ -133,9 +133,33 @@ class MultipleChoiceQuestion extends StatefulWidget {
 }
 
 class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
+
   int selectedOptionIndex;
   bool isAnswerCorrect = false;
 
+
+  void addMistakeToFirebase(Question question) {
+    final User user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
+      databaseReference.child('users/${user.uid}/mistakes').once().then((DatabaseEvent snapshot) {
+        List<dynamic> mistakes = snapshot.snapshot.value ?? [];
+        // Create a new list and add the mistake
+        List<dynamic> updatedMistakes = List.from(mistakes);
+        updatedMistakes.add(question.toMap());
+        if (updatedMistakes.length > 15) {
+          updatedMistakes.removeAt(0);
+        }
+        // Set the updated list back to Firebase
+        databaseReference.child('users/${user.uid}/mistakes').set(updatedMistakes);
+      }).catchError((error) {
+        print("Ошибка при добавлении ошибки в базу данных: $error");
+      });
+    } else {
+      // Handle the case when the user is not authenticated
+    }
+  }
   void _showResultDialog(bool isCorrect) {
     showModalBottomSheet(
       context: context,
@@ -328,7 +352,7 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
       if (isCorrect) {
         widget.onAnswerCorrect(); // Increase the correct answers count
       } else {
-        // Append the current question to the end of the questions list
+        addMistakeToFirebase(widget.question);
         setState(() {
           widget.questions.add(widget.question);
         });
@@ -374,6 +398,28 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
     setState(() {
       isButtonDisabled = answerController.text.isEmpty;
     });
+  }
+  void addMistakeToFirebase(Question question) {
+    final User user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
+      databaseReference.child('users/${user.uid}/mistakes').once().then((DatabaseEvent snapshot) {
+        List<dynamic> mistakes = snapshot.snapshot.value ?? [];
+        // Create a new list and add the mistake
+        List<dynamic> updatedMistakes = List.from(mistakes);
+        updatedMistakes.add(question.toMap());
+        if (updatedMistakes.length > 15) {
+          updatedMistakes.removeAt(0);
+        }
+        // Set the updated list back to Firebase
+        databaseReference.child('users/${user.uid}/mistakes').set(updatedMistakes);
+      }).catchError((error) {
+        print("Ошибка при добавлении ошибки в базу данных: $error");
+      });
+    } else {
+      // Handle the case when the user is not authenticated
+    }
   }
 
   void _showResultDialog(bool isCorrect) {
@@ -524,7 +570,8 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
     if (isCorrect) {
       widget.onAnswerCorrect(); // Increase the correct answers count
     } else {
-      // Append the current question to the end of the questions list
+      print(widget.question.toMap());
+      addMistakeToFirebase(widget.question);
       setState(() {
         widget.questions.add(widget.question);
       });
