@@ -141,27 +141,37 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
       context: context,
       isDismissible: false, // Запрещаем закрытие при нажатии вне окна
       builder: (BuildContext context) {
-        return Container(
-          color: isCorrect?Colors.green:Colors.red,
+        return !isCorrect?Container(
+          height: 150,
+          color: isCorrect?Colors.green[300].withOpacity(0.45):Colors.red[300].withOpacity(0.45),
           padding: EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                isCorrect ? 'Correct Answer' : 'Incorrect Answer',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                isCorrect ? 'Correct Answer' : 'Correct Solution:',
+                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: isCorrect? Colors.green:Colors.red),
               ),
               SizedBox(height: 12.0),
               Text(
                 isCorrect
                     ? 'Congratulations! Your answer is correct.'
-                    : 'Correct answer:${widget.question.options[widget.question.correctAnswerIndex]}',
-                style: TextStyle(fontSize: 16.0),
+                    : '${widget.question.options[widget.question.correctAnswerIndex]}',
+                style: TextStyle(fontSize: 16.0,color: isCorrect? Colors.green:Colors.red, fontFamily: 'Feather'),
               ),
-              SizedBox(height: 12.0),
+              SizedBox(height: 20.0),
               SizedBox(
                 width: double.infinity,
+                height: 40,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isCorrect? Colors.green : Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                     setState(() {
@@ -169,7 +179,45 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
                     });
                     widget.onNextQuestion(); // Перейти к следующему вопросу
                   },
-                  child: Text('Next Question'),
+                  child: Text('CONTINUE',style: TextStyle(fontFamily: 'Feather',fontSize: 15),),
+                ),
+              ),
+            ],
+          ),
+        )
+            :
+        Container(
+          height: 120,
+          color: isCorrect?Colors.green[400].withOpacity(0.45):Colors.red[300].withOpacity(0.45),
+          padding: EdgeInsets.only(left: 16,right: 16,top: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                isCorrect ? 'Great!' : 'Correct Solution:',
+                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: isCorrect? Colors.green:Colors.red),
+              ),
+
+              SizedBox(height: 20.0),
+              SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isCorrect? Colors.green : Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      selectedOptionIndex = null;
+                    });
+                    widget.onNextQuestion(); // Перейти к следующему вопросу
+                  },
+                  child: Text('CONTINUE',style: TextStyle(fontFamily: 'Feather',fontSize: 15),),
                 ),
               ),
             ],
@@ -240,41 +288,34 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
           ),
           Column(
             children: [
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF7e4a3b),
-                  ),
-                  onPressed: () {
-                    skip();
-                  },
-                  child: Text('Skip'),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(17)
                 ),
-              ),
-              SizedBox(
+                margin: EdgeInsetsDirectional.only(start: 20,end: 20,bottom: 20),
                 width: double.infinity,
+                height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF7e4a3b),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17.0),
+                    ),
                   ),
-                  onPressed: () {
+                  onPressed: selectedOptionIndex != null ? () {
                     checkAnswer();
-                  },
-                  child: Text('Check Answer'),
+                  }: null,
+                  child: Text('CHECK',style: TextStyle(
+                    fontFamily: 'Feather',
+                    fontSize: 15
+                  ),),
                 ),
               ),
-              SizedBox(height: 12.0),
             ],
           ),
         ],
       ),
     );
-
-
-
-
-
   }
 
   void checkAnswer() {
@@ -321,38 +362,98 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
   final TextEditingController answerController = TextEditingController();
   bool isAnswerCorrect;
 
+  bool isButtonDisabled = true;
+
+  @override
+  void initState() {
+    super.initState();
+    answerController.addListener(_checkTextField);
+  }
+
+  void _checkTextField() {
+    setState(() {
+      isButtonDisabled = answerController.text.isEmpty;
+    });
+  }
+
   void _showResultDialog(bool isCorrect) {
     showModalBottomSheet(
       context: context,
       isDismissible: false, // Запрещаем закрытие при нажатии вне окна
       builder: (BuildContext context) {
-        return Container(
-          color: isCorrect?Colors.green:Colors.red,
+        return !isCorrect?Container(
+          height: 150,
+          color: isCorrect?Colors.green[300].withOpacity(0.45):Colors.red[300].withOpacity(0.45),
           padding: EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                isCorrect ? 'Correct Answer' : 'Incorrect Answer',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                isCorrect ? 'Correct Answer' : 'Correct Solution:',
+                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: isCorrect? Colors.green:Colors.red),
               ),
               SizedBox(height: 12.0),
               Text(
                 isCorrect
                     ? 'Congratulations! Your answer is correct.'
-                    : 'Correct answer:${widget.question.correctInputAns}',
-                style: TextStyle(fontSize: 16.0),
+                    : '${widget.question.correctInputAns}',
+                style: TextStyle(fontSize: 16.0,color: isCorrect? Colors.green:Colors.red, fontFamily: 'Feather'),
               ),
-              SizedBox(height: 12.0),
+              SizedBox(height: 20.0),
               SizedBox(
                 width: double.infinity,
+                height: 40,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isCorrect? Colors.green : Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                     answerController.clear();
-                    widget.onNextQuestion(); // Перейти к следующему вопросу
+                    widget.onNextQuestion();// Перейти к следующему вопросу
                   },
-                  child: Text('Next Question'),
+                  child: Text('CONTINUE',style: TextStyle(fontFamily: 'Feather',fontSize: 15),),
+                ),
+              ),
+            ],
+          ),
+        )
+            :
+        Container(
+          height: 120,
+          color: isCorrect?Colors.green[400].withOpacity(0.45):Colors.red[300].withOpacity(0.45),
+          padding: EdgeInsets.only(left: 16,right: 16,top: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                isCorrect ? 'Great!' : 'Correct Solution:',
+                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: isCorrect? Colors.green:Colors.red),
+              ),
+
+              SizedBox(height: 20.0),
+              SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isCorrect? Colors.green : Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    answerController.clear();
+                    widget.onNextQuestion();// Перейти к следующему вопросу
+                  },
+                  child: Text('CONTINUE',style: TextStyle(fontFamily: 'Feather',fontSize: 15),),
                 ),
               ),
             ],
@@ -379,30 +480,26 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
           ),
           Column(
             children: [
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
 
-                  style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      backgroundColor: Color(0xFF7e4a3b)
-                  ),
-                  onPressed: () {
-                    skip();
-                  },
-                  child: Text('Skip'),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(17)
                 ),
-              ),
-              SizedBox(
+                margin: EdgeInsetsDirectional.only(start: 20,end: 20,bottom: 20),
                 width: double.infinity,
+                height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF7e4a3b)
+                    backgroundColor: Color(0xFF7e4a3b),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17.0),
+                    ),
                   ),
-                  onPressed: () {
-                    checkAnswer();
-                  },
-                  child: Text('Check Answer'),
+                  child: Text('CHECK',style: TextStyle(
+                      fontFamily: 'Feather',
+                      fontSize: 15
+                        ),),
+                  onPressed:  isButtonDisabled ? null : checkAnswer,
                 ),
               ),
             ],
