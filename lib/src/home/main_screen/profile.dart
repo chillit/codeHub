@@ -74,15 +74,11 @@ class _ProfileState extends State<Profile> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Question"),
+          title: Text("Answer:"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Question:"),
-              Text(question.question),
-              SizedBox(height: 10),
-              Text("Answer:"),
               question.questionType == QuestionType.multipleChoice? Text(question.options[question.correctAnswerIndex]):Text(question.correctInputAns)
             ],
           ),
