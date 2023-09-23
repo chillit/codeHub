@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:duolingo/src/home/main_screen/questions/models/question_class.dart';
 import 'package:duolingo/src/home/main_screen/questions/models/result_screen.dart';
@@ -125,6 +127,13 @@ class MultipleChoiceQuestion extends StatefulWidget {
   final Function() onNextQuestion;
   final Function() onAnswerCorrect;
   final List<Question> questions;
+  final List<String> congratulatoryMessages = [
+    'Good Job!',
+    'Great!',
+    'Well done!',
+    'Fantastic!',
+    'Awesome!'
+  ];
 
   MultipleChoiceQuestion({this.question, this.onNextQuestion, this.onAnswerCorrect,this.questions});
 
@@ -136,37 +145,53 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
   int selectedOptionIndex;
   bool isAnswerCorrect = false;
 
+  String _getRandomCongratulatoryMessage(List<String> messages) {
+    final Random random = Random();
+    return messages[random.nextInt(messages.length)];
+  }
+
+
   void _showResultDialog(bool isCorrect) {
+    String congratulatoryMessage = _getRandomCongratulatoryMessage(widget.congratulatoryMessages);
     showModalBottomSheet(
       context: context,
       isDismissible: false, // Запрещаем закрытие при нажатии вне окна
       builder: (BuildContext context) {
         return !isCorrect?Container(
           height: 150,
-          color: isCorrect?Colors.green[300].withOpacity(0.45):Colors.red[300].withOpacity(0.45),
+          color: Colors.red[300].withOpacity(0.45),
           padding: EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                isCorrect ? 'Correct Answer' : 'Correct Solution:',
-                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: isCorrect? Colors.green:Colors.red),
+                'Correct Solution:',
+                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: Colors.red),
               ),
               SizedBox(height: 12.0),
-              Text(
-                isCorrect
-                    ? 'Congratulations! Your answer is correct.'
-                    : '${widget.question.options[widget.question.correctAnswerIndex]}',
-                style: TextStyle(fontSize: 16.0,color: isCorrect? Colors.green:Colors.red, fontFamily: 'Feather'),
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(child:Text(
+                           '${widget.question.options[widget.question.correctAnswerIndex]}',
+                        style: TextStyle(fontSize: 16.0,color: Colors.red, fontFamily: 'Feather'),
+                        overflow: TextOverflow.ellipsis,
+                      )
+                      )
+                    ],
+                  ),
+                ],
               ),
               SizedBox(height: 20.0),
+
               SizedBox(
                 width: double.infinity,
                 height: 40,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isCorrect? Colors.green : Colors.red,
+                    backgroundColor:  Colors.red,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
@@ -188,15 +213,15 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
             :
         Container(
           height: 120,
-          color: isCorrect?Colors.green[400].withOpacity(0.45):Colors.red[300].withOpacity(0.45),
+          color: Colors.green[400].withOpacity(0.45),
           padding: EdgeInsets.only(left: 16,right: 16,top: 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                isCorrect ? 'Great!' : 'Correct Solution:',
-                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: isCorrect? Colors.green:Colors.red),
+                congratulatoryMessage ,
+                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: Colors.green),
               ),
 
               SizedBox(height: 20.0),
@@ -205,7 +230,7 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
                 height: 40,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isCorrect? Colors.green : Colors.red,
+                    backgroundColor:  Colors.green ,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
@@ -343,7 +368,6 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
     });
     _showResultDialog(false);
   }
-
 }
 
 class TextInputQuestion extends StatefulWidget {
@@ -351,6 +375,15 @@ class TextInputQuestion extends StatefulWidget {
   final Question question;
   final Function() onNextQuestion;
   final Function() onAnswerCorrect;
+
+  final List<String> congratulatoryMessages = [
+    'Good Job!',
+    'Great!',
+    'Well done!',
+    'Fantastic!',
+    'Awesome!'
+  ];
+
 
   TextInputQuestion({this.question, this.onNextQuestion, this.onAnswerCorrect,this.questions});
 
@@ -361,8 +394,13 @@ class TextInputQuestion extends StatefulWidget {
 class _TextInputQuestionState extends State<TextInputQuestion> {
   final TextEditingController answerController = TextEditingController();
   bool isAnswerCorrect;
-
   bool isButtonDisabled = true;
+  String _getRandomCongratulatoryMessage(List<String> messages) {
+    final Random random = Random();
+    return messages[random.nextInt(messages.length)];
+  }
+
+
 
   @override
   void initState() {
@@ -377,28 +415,37 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
   }
 
   void _showResultDialog(bool isCorrect) {
+    String congratulatoryMessage = _getRandomCongratulatoryMessage(widget.congratulatoryMessages);
     showModalBottomSheet(
       context: context,
       isDismissible: false, // Запрещаем закрытие при нажатии вне окна
       builder: (BuildContext context) {
         return !isCorrect?Container(
           height: 150,
-          color: isCorrect?Colors.green[300].withOpacity(0.45):Colors.red[300].withOpacity(0.45),
+          color: Colors.red[300].withOpacity(0.45),
           padding: EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                isCorrect ? 'Correct Answer' : 'Correct Solution:',
-                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: isCorrect? Colors.green:Colors.red),
+                'Correct Solution:',
+                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: Colors.red),
               ),
               SizedBox(height: 12.0),
-              Text(
-                isCorrect
-                    ? 'Congratulations! Your answer is correct.'
-                    : '${widget.question.correctInputAns}',
-                style: TextStyle(fontSize: 16.0,color: isCorrect? Colors.green:Colors.red, fontFamily: 'Feather'),
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(child:Text(
+                        '${widget.question.correctInputAns}',
+                        style: TextStyle(fontSize: 16.0,color: Colors.red, fontFamily: 'Feather'),
+                        overflow: TextOverflow.ellipsis,
+                      )
+                      )
+                    ],
+                  ),
+                ],
               ),
               SizedBox(height: 20.0),
               SizedBox(
@@ -406,7 +453,7 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
                 height: 40,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isCorrect? Colors.green : Colors.red,
+                    backgroundColor:  Colors.red,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
@@ -426,24 +473,23 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
             :
         Container(
           height: 120,
-          color: isCorrect?Colors.green[400].withOpacity(0.45):Colors.red[300].withOpacity(0.45),
+          color: Colors.green[400].withOpacity(0.45),
           padding: EdgeInsets.only(left: 16,right: 16,top: 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                isCorrect ? 'Great!' : 'Correct Solution:',
-                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: isCorrect? Colors.green:Colors.red),
+                 congratulatoryMessage,
+                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color:  Colors.green),
               ),
-
               SizedBox(height: 20.0),
               SizedBox(
                 width: double.infinity,
                 height: 40,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isCorrect? Colors.green : Colors.red,
+                    backgroundColor: Colors.green ,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
