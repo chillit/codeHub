@@ -27,8 +27,8 @@ class _RankingState extends State<Ranking> {
   void initState() {
     super.initState();
     _userRef = FirebaseDatabase.instance.reference().child('users');
-    _fetchUsers();
     _fetchUserData();
+    _fetchUsers();
     _getUserData();
   }
 
@@ -41,7 +41,6 @@ class _RankingState extends State<Ranking> {
 
       setState(() {
         currentUsername = nameSnapshot.snapshot.value?.toString() ?? '';
-        print('Current User: $currentUsername');
       });
     }
   }
@@ -121,9 +120,10 @@ class _RankingState extends State<Ranking> {
 
 
   @override
+
   Widget build(BuildContext context) {
 
-    String pointsProfile= getOrdinalSuffix(rankNumber);
+    String pointsProfile = rankNumber != null ? getOrdinalSuffix(rankNumber) : '';
     return Stack(
       children: <Widget>[
         Scaffold(
