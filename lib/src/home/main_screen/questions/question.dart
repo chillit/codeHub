@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:duolingo/src/home/main_screen/home.dart';
+import 'package:duolingo/src/home/main_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:duolingo/src/home/main_screen/questions/models/question_class.dart';
 import 'package:duolingo/src/home/main_screen/questions/models/result_screen.dart';
@@ -70,12 +72,91 @@ class _QuestionScreenState extends State<QuestionScreen> {
       return ResultScreen(score: correctAnswersCount, len: totalQuestionsCount);
     }
 
+    void _showConfirmation(){
+      showModalBottomSheet(
+          context: context,
+          isDismissible: false,
+          builder: (BuildContext context){
+            return Container(
+              padding: EdgeInsets.all(16),
+              height: 240,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 10,),
+                  Text('Are you sure you want to quit?',style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),),
+                  SizedBox(height: 10,),
+                  Text('All progress wil be lost',style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.grey
+                  ),),
+                  SizedBox(height: 20,),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed:
+                          (){
+                            Navigator.of(context).pop();
+                      },
+                      child: Text('STAY',style: TextStyle(
+                          fontFamily: 'Feather',
+                          fontSize: 16
+                      ),),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF7e7e94),
+                        onPrimary: Colors.white, // text color
+                        elevation: 5, // shadow elevation// button padding
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14), // button border radius
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30,),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                          builder: (context) => Home()),
+                      );
+                    },
+                    child: Text(
+                      'QUIT',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF7e7e94), // Text color
+                         // Underline the text
+                      )
+                    ),
+                  )
+                ],
+              ),
+            );
+          }
+      );
+    };
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(
-          color: Colors.red, // Set the color of the back arrow to red
+        leading: IconButton(
+          icon: Icon(
+            Icons.close_sharp,
+            color: Colors.grey, // Set the color of the back arrow to red
+          ),
+          onPressed: () {
+            _showConfirmation();
+          },
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -149,6 +230,8 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
     final Random random = Random();
     return messages[random.nextInt(messages.length)];
   }
+
+
 
 
   void _showResultDialog(bool isCorrect) {

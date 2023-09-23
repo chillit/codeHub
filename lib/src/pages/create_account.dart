@@ -1,6 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:duolingo/src/home/login/login_page.dart';
-import 'package:duolingo/src/home/login/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/gestures.dart';
@@ -456,9 +455,7 @@ class _CreateUserState extends State<CreateUser> {
                       child: ElevatedButton(
                         onPressed: isEmailEmpty || isPasswordEmpty ? null:
                             (){
-
                                sendDataToFirebaseStudent();
-
                         },
                         child: Text('CREATE ACCOUNT',style: TextStyle(
                           fontFamily: 'Feather',
@@ -767,7 +764,7 @@ class _LogINaccountState extends State<LogINaccount> {
                     padding:  EdgeInsetsDirectional.only(start: MediaQuery.of(context).size.width/10,end:MediaQuery.of(context).size.width/10),
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(width: 1.5,color: Colors.black54,),
+                        border: isEmailEmpty || isPasswordEmpty ? Border.all(width: 1.5,color: Colors.black54,):null,
                         borderRadius: BorderRadius.circular(21),
                       ),
                       width: 400,

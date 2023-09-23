@@ -18,8 +18,7 @@ class _HomeState extends State<Home> {
     HomeScreen(),
     Profile(),
     Ranking(),
-    Store(),
-    Stories(),
+
   ];
   final PageStorageBucket _bucket = PageStorageBucket();
   Widget currentScreen = HomeScreen();
@@ -35,104 +34,86 @@ class _HomeState extends State<Home> {
           preferredSize: const Size.fromHeight(45),
           child: appBar,
         ),
-        body: PageStorage(
-          bucket: _bucket,
-          child: currentScreen,
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.white,
-          onPressed: () {},
-          child: Image.asset(
-            "assets/images/floating_action_button/tab_training_selected.png",
-            height: 33,
+        body: Column(
+          children: [
+            Expanded(
+              child: PageStorage(
+                bucket: _bucket,
+                child: currentScreen,
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 1.5, // Adjust the height of the line as needed
+              decoration: BoxDecoration(
+                color: Colors.grey[350], // You can change the color of the line
+              ),
+            ),
+         SizedBox(
+          height: 100,
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _currentIndex,
+            backgroundColor: Colors.white,
+            iconSize: _iconSize,
+            onTap: (int index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            items: [
+              BottomNavigationBarItem(
+                label: '',
+                icon: IconButton(
+                  icon: _currentIndex == 0
+                      ? Images.selectedLessons
+                      : Images.tabLessons,
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 0;
+                      currentScreen = HomeScreen();
+                    });
+                  },
+                  iconSize: _currentIndex == 0 ? _iconSizeSelected : _iconSize,
+                ),
+              ),
+              BottomNavigationBarItem(
+                label: '',
+                icon: IconButton(
+                  icon: _currentIndex == 1
+                      ? Images.selectedRanking
+                      : Images.tabRanking,
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 1;
+                      currentScreen = Ranking();
+                    });
+                  },
+                  iconSize: _currentIndex == 1 ? _iconSizeSelected : _iconSize,
+                ),
+              ),
+
+              BottomNavigationBarItem(
+                label: '',
+                icon: IconButton(
+                  icon: _currentIndex == 2
+                      ? Images.selectedProfile
+                      : Images.tabProfile,
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 2;
+                      currentScreen = Profile();
+                    });
+                  },
+                  iconSize: _currentIndex == 2 ? _iconSizeSelected : _iconSize,
+                ),
+              ),
+
+            ],
           ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex,
-          backgroundColor: Colors.blue,
-          iconSize: _iconSize,
-          onTap: (int index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: IconButton(
-                icon: _currentIndex == 0
-                    ? Images.selectedLessons
-                    : Images.tabLessons,
-                onPressed: () {
-                  setState(() {
-                    _currentIndex = 0;
-                    currentScreen = HomeScreen();
-                  });
-                },
-                iconSize: _currentIndex == 0 ? _iconSizeSelected : _iconSize,
-              ),
-              label: "hello",
-            ),
-            BottomNavigationBarItem(
-              icon: IconButton(
-                icon: _currentIndex == 1
-                    ? Images.selectedStories
-                    : Images.tabStories,
-                onPressed: () {
-                  setState(() {
-                    _currentIndex = 1;
-                    currentScreen = Stories();
-                  });
-                },
-                iconSize: _currentIndex == 1 ? _iconSizeSelected : _iconSize,
-              ),
-              label: "hello",
-            ),
-            BottomNavigationBarItem(
-              icon: IconButton(
-                icon: _currentIndex == 2
-                    ? Images.selectedProfile
-                    : Images.tabProfile,
-                onPressed: () {
-                  setState(() {
-                    _currentIndex = 2;
-                    currentScreen = Profile();
-                  });
-                },
-                iconSize: _currentIndex == 2 ? _iconSizeSelected : _iconSize,
-              ),
-              label: "hello",
-            ),
-            BottomNavigationBarItem(
-              icon: IconButton(
-                icon: _currentIndex == 3
-                    ? Images.selectedRanking
-                    : Images.tabRanking,
-                onPressed: () {
-                  setState(() {
-                    _currentIndex = 3;
-                    currentScreen = Ranking();
-                  });
-                },
-                iconSize: _currentIndex == 3 ? _iconSizeSelected : _iconSize,
-              ),
-              label: "hello",
-            ),
-            BottomNavigationBarItem(
-              icon: IconButton(
-                icon:
-                    _currentIndex == 4 ? Images.selectedStore : Images.tabStore,
-                onPressed: () {
-                  setState(() {
-                    _currentIndex = 4;
-                    currentScreen = Store();
-                  });
-                },
-                iconSize: _currentIndex == 4 ? _iconSizeSelected : _iconSize,
-              ),
-              label: "hello",
-            ),
+        )
           ],
-        ));
+        )
+    );
   }
 }
