@@ -1,14 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:duolingo/src/home/main_screen/questions/question.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:duolingo/src/home/main_screen/questions/models/question_class.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -23,6 +18,7 @@ class _ProfileState extends State<Profile> {
   int userPoints = 0;
   String rank = '';
   String language = '';
+  List<Question> recentMistakes = []; // List to store recent mistakes/questions
 
   @override
   void initState() {
@@ -39,16 +35,64 @@ class _ProfileState extends State<Profile> {
         final Map<dynamic, dynamic> data = dataSnapshot.snapshot.value;
         print(data);
 
-        setState(() {
-          name = data['Username'];
-          userPoints = data['points'];
-          rank = data['rank'];
-          language = data['language'];
-        });
+        // Check if the widget is still mounted before calling setState
+        if (mounted) {
+          setState(() {
+            name = data['Username'] ?? ''; // Provide a default value if 'Username' is null
+            userPoints = data['points'] ?? 0; // Provide a default value if 'points' is null
+            rank = data['rank'] ?? ''; // Provide a default value if 'rank' is null
+            language = data['language'] ?? ''; // Provide a default value if 'language' is null
+            // Load recent mistakes/questions from data (assuming it's stored in a list)
+            recentMistakes = List<Question>.from(
+              (data['mistakes'] ?? []).map(
+                    (mistakeData) => Question(
+                  question: mistakeData['question'] ?? '',
+                  options: List<String>.from(mistakeData['options'] ?? []),
+                  correctAnswerIndex: mistakeData['correctAnswerIndex'] ?? 0,
+                  questionType: QuestionType.values.firstWhere(
+                        (e) => e.toString() == mistakeData['questionType'],
+                    orElse: () => QuestionType.multipleChoice, // Provide a default value
+                  ),
+                  correctInputAns: mistakeData['correctInputAns'] ?? '',
+                ),
+              ),
+            );
+          });
+        }
       }
     } catch (error) {
       print('Error: $error');
     }
+  }
+
+
+
+
+
+  void _showQuestionDialog(Question question) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Answer:"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              question.questionType == QuestionType.multipleChoice? Text(question.options[question.correctAnswerIndex]):Text(question.correctInputAns)
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
 
@@ -59,8 +103,8 @@ _titleText(String text) {
     );
   }
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
+    @override
+    Widget build(BuildContext context) => Scaffold(
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -93,7 +137,7 @@ _titleText(String text) {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            height: 80,
+                            height: 50,
                             width: 170,
                             child: ListTile(
                                 leading: Icon(
@@ -113,7 +157,7 @@ _titleText(String text) {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            height: 80,
+                            height: 60,
                             width: 170,
                             child: ListTile(
                                 leading: Icon(
@@ -134,21 +178,25 @@ _titleText(String text) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        _titleText("achievements"),/*ну если время будет то можно и такое релизовать, всякие достижения типа для мотивации*/
-                        Text("ADICIONAR AMIGOS", style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold,
-                          color: Colors.lightBlue),),
+                        _titleText("Last mistakes"),
                       ],
                     ),
-                    Card(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        height: 80,
-                        width: 170,
-                      ),
-                    ),
+                    SizedBox(height: 10),
+                    // List of recent mistakes/questions
+                    ListView.builder(
+                      shrinkWrap: true, // Add this line
+                      itemCount: recentMistakes.length,
+                      itemBuilder: (context, index) {
+                        final question = recentMistakes[index];
+                        return ListTile(
+                          title: Text(question.question),
+                          onTap: () {
+                            // Show the question and its answer when tapped
+                            _showQuestionDialog(question);
+                          },
+                        );
+                      },
+                    )
                   ],
                 ),
               ],

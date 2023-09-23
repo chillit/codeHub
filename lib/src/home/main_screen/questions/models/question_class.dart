@@ -17,4 +17,14 @@ class Question {
     this.questionType = QuestionType.multipleChoice,
     this.correctInputAns,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'question': question,
+      'options': options?? [],
+      'correctAnswerIndex': correctAnswerIndex?? 0,
+      'questionType': questionType.toString(), // Convert enum to string
+      'correctInputAns': correctInputAns,
+    };
+  }
 }

@@ -37,23 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
       DatabaseEvent levelSnapshot = await levelRef.once();
       DatabaseEvent languageSnapshot = await languageRef.once();
-
-      // Установите значения по умолчанию, если данные отсутствуют
       userLevel = levelSnapshot.snapshot.value;
       userLanguage = languageSnapshot.snapshot.value?.toString() ?? '';
-      fetchPythonQuestions(userLevel,userLanguage);
     }
   }
-
-  Future<void> fetchPythonQuestions(userLevel,userLanguage) async {
-    final questions = await getPythonQuestions(userLevel,userLanguage);
-    setState(() {
-      pythonQuestions = questions;
-    });
-  }
-  Future<List<Question>> getPythonQuestions(userLevel,userLanguage) async {
+  Future<List<Question>> getPythonQuestions(level) async {
     final databaseReference = FirebaseDatabase.instance.reference();
-    final DatabaseEvent dataSnapshot = await databaseReference.child('allq/$userLanguage/0').once();
+    final DatabaseEvent dataSnapshot = await databaseReference.child('allq/$userLanguage/$level').once();
 
     final questionsData = dataSnapshot.snapshot.value as List<dynamic>;
     final List<Question> pythonQuestions = [];
@@ -72,6 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
       pythonQuestions.add(question);
     }
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QuestionScreen(questionss: pythonQuestions ), // Замените YourNewPage() на вашу новую страницу
+      ),
+    );
 
     return pythonQuestions;
   }
@@ -92,12 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               InkWell(
                 onTap: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => QuestionScreen(questionss: pythonQuestions ), // Замените YourNewPage() на вашу новую страницу
-                    ),
-                  );
+                  userLevel>=1?getPythonQuestions(0):null;
                 },
 
                 child: const CircleAvatarIndicator(Color(0xFF55acf3),
@@ -111,12 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: <Widget>[
                   InkWell(
                     onTap: () async {
-                      userLevel>=1?await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuestionScreen(questionss: questions ), // Замените YourNewPage() на вашу новую страницу
-                        ),
-                      ):null;
+                      userLevel>=1?getPythonQuestions(1):null;
                     },
                     child: Column(
                       children: <Widget>[
@@ -130,12 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(width: 33),
                   InkWell(
                     onTap: () async {
-                      userLevel>=2?await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuestionScreen(questionss: questions ), // Замените YourNewPage() на вашу новую страницу
-                        ),
-                      ):null;
+                      userLevel>=1?getPythonQuestions(2):null;
                     },
                     child: Column(
                       children: <Widget>[
@@ -154,12 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: <Widget>[
                   InkWell(
                     onTap: () async {
-                      userLevel>=3?await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuestionScreen(questionss: questions ), // Замените YourNewPage() на вашу новую страницу
-                        ),
-                      ):null;
+                      userLevel>=1?getPythonQuestions(4):null;
                     },
                     child: Column(
                       children: <Widget>[
@@ -173,12 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(width: 33),
                   InkWell(
                     onTap: () async {
-                      userLevel>=4?await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuestionScreen(questionss: questions ), // Замените YourNewPage() на вашу новую страницу
-                        ),
-                      ):null;
+                      userLevel>=1?getPythonQuestions(5):null;
                     },
                     child: Column(
                       children: <Widget>[
