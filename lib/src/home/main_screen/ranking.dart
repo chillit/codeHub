@@ -17,7 +17,7 @@ class _RankingState extends State<Ranking> {
   DatabaseReference _databaseReference;
   int rankNumber;
 
-
+  bool _isLoading = true;
   User user;
 
 
@@ -61,6 +61,9 @@ class _RankingState extends State<Ranking> {
         _users.sort((a, b) => b['points'].compareTo(a['points']));
       }
       rankNumber = _users.indexWhere((user) => user['Username'] == currentUsername) + 1;
+      setState(() {
+        _isLoading = false; // Устанавливаем _isLoading в false после загрузки данных
+      });
     });
   }
   Color my = Colors.brown, CheckMyColor = Colors.white;
@@ -124,47 +127,50 @@ class _RankingState extends State<Ranking> {
   Widget build(BuildContext context) {
 
     String pointsProfile = rankNumber != null ? getOrdinalSuffix(rankNumber) : '';
-    return Stack(
-      children: <Widget>[
-        Scaffold(
-            body: Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Leaderboard",style: TextStyle(fontFamily: 'Feather',fontSize: 17),)
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.only( top: 10.0),
-                    child: Column(
+    return Scaffold(
+      body: _isLoading?
+        Center(child: CircularProgressIndicator(),):
+      Stack(
+        children: <Widget>[
+          Scaffold(
+              body: Container(
+                margin: EdgeInsets.only(top: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(width: 50,),
-                            _titleText("$pointsProfile"),
-                            const SizedBox(width: 60),
-                            ClipOval(
-                              child: Image.asset(
-                                userPoints>=400?"assets/images/ranks/r.png":userPoints>=350?"assets/images/ranks/i.png":userPoints>=300?"assets/images/ranks/a.png":userPoints>=250?"assets/images/ranks/d.png":userPoints>=200?"assets/images/ranks/p.png":userPoints>=150?"assets/images/ranks/g.png":userPoints>100?"assets/images/ranks/s.png":userPoints>=50?"assets/images/ranks/b.png":"assets/images/ranks/ir.png",
-                                height: 120,
-                              ),
-                            ),
-                            SizedBox(width: 50),
-                            Text("$userPoints pts",style: TextStyle(fontFamily: 'Feather',fontSize: 20),)
-                          ],
-                        ),
-                        Divider(color: Colors.grey.shade500),
+                        Text("Leaderboard",style: TextStyle(fontFamily: 'Feather',fontSize: 17),)
                       ],
                     ),
-                  ),
-                  SizedBox(height: 15,),
-                  Flexible(
+                    Container(
+                      margin: EdgeInsets.only( top: 10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(width: 50,),
+                              _titleText("$pointsProfile"),
+                              const SizedBox(width: 60),
+                              ClipOval(
+                                child: Image.asset(
+                                  userPoints>=400?"assets/images/ranks/r.png":userPoints>=350?"assets/images/ranks/i.png":userPoints>=300?"assets/images/ranks/a.png":userPoints>=250?"assets/images/ranks/d.png":userPoints>=200?"assets/images/ranks/p.png":userPoints>=150?"assets/images/ranks/g.png":userPoints>100?"assets/images/ranks/s.png":userPoints>=50?"assets/images/ranks/b.png":"assets/images/ranks/ir.png",
+                                  height: 120,
+                                ),
+                              ),
+                              SizedBox(width: 50),
+                              Text("$userPoints pts",style: TextStyle(fontFamily: 'Feather',fontSize: 20),)
+                            ],
+                          ),
+                          Divider(color: Colors.grey.shade500),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15,),
+                    Flexible(
                       child: ListView.builder(
                         itemCount: _users.length,
                         itemBuilder: (BuildContext context, int index) {
@@ -176,7 +182,7 @@ class _RankingState extends State<Ranking> {
                           return ListTile(
                             tileColor: isCurrentUser ? Colors.green.withOpacity(0.25) : null,
                             leading: Container(
-                                width: 80.0,
+                              width: 80.0,
                               child: Row(
                                 children: [
                                   Text('$rankNumber',style: TextStyle(fontSize: 15,fontFamily: 'Feather'),),
@@ -188,9 +194,9 @@ class _RankingState extends State<Ranking> {
                               ),
                             ),
                             title: Text(userName,style: TextStyle(
-                              color: isCurrentUser ? Colors.green : null,
-                              fontSize: 15,
-                              fontFamily: 'Feather'
+                                color: isCurrentUser ? Colors.green : null,
+                                fontSize: 15,
+                                fontFamily: 'Feather'
                             ),),
                             trailing: Text('$userPoints points',style: TextStyle(
                               fontFamily: 'Feather',
@@ -199,11 +205,12 @@ class _RankingState extends State<Ranking> {
                           );
                         },
                       ),
-                  )
-                ],
-              ),
-            )),
-      ],
+                    )
+                  ],
+                ),
+              )),
+        ],
+      ),
     );
   }
 }

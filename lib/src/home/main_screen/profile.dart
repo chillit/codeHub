@@ -13,7 +13,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   DatabaseReference _databaseReference;
-
+  bool _isLoading = true;
   String name = '';
   int userPoints = 0;
   String rank = '';
@@ -28,12 +28,14 @@ class _ProfileState extends State<Profile> {
 
   Future<void> _getUserData() async {
     try {
+      setState(() {
+        _isLoading = true; // Установите состояние загрузки в true
+      });
       final user = _auth.currentUser;
       if (user != null) {
         _databaseReference = FirebaseDatabase.instance.reference().child('users/${user.uid}');
         final dataSnapshot = await _databaseReference.once();
         final Map<dynamic, dynamic> data = dataSnapshot.snapshot.value;
-        print(data);
 
         // Check if the widget is still mounted before calling setState
         if (mounted) {
@@ -46,22 +48,26 @@ class _ProfileState extends State<Profile> {
             recentMistakes = List<Question>.from(
               (data['mistakes'] ?? []).map(
                     (mistakeData) => Question(
-                  question: mistakeData['question'] ?? '',
+                  question: (mistakeData['question'] ?? '').substring(2), // Начиная с третьего символа
                   options: List<String>.from(mistakeData['options'] ?? []),
                   correctAnswerIndex: mistakeData['correctAnswerIndex'] ?? 0,
                   questionType: QuestionType.values.firstWhere(
                         (e) => e.toString() == mistakeData['questionType'],
-                    orElse: () => QuestionType.multipleChoice, // Provide a default value
+                    orElse: () => QuestionType.multipleChoice, // Предоставьте значение по умолчанию
                   ),
                   correctInputAns: mistakeData['correctInputAns'] ?? '',
                 ),
               ),
             );
+            _isLoading = false;
           });
         }
       }
     } catch (error) {
       print('Error: $error');
+      setState(() {
+        _isLoading = false; // В случае ошибки также установите состояние загрузки в false
+      });
     }
   }
 
@@ -82,17 +88,43 @@ class _ProfileState extends State<Profile> {
               question.questionType == QuestionType.multipleChoice? Text(question.options[question.correctAnswerIndex]):Text(question.correctInputAns)
             ],
           ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("Close"),
-            ),
-          ],
         );
       },
     );
+  }
+  Future<List<Question>> getPythonQuestions() async {
+    final user = _auth.currentUser;
+    final List<Question> pythonQuestions = [];
+    if (user != null) {
+      final useruid = user.uid;
+      final databaseReference = FirebaseDatabase.instance.reference();
+      final DatabaseEvent dataSnapshot = await databaseReference.child('users/$useruid/mistakes').once();
+
+      final questionsData = dataSnapshot.snapshot.value as List<dynamic>;
+
+      for (final questionData in questionsData) {
+        final question = Question(
+          question: (questionData['question']??"").substring(2),
+          correctAnswerIndex: questionData['correctAnswerIndex'],
+          options: (questionData['options'] as List<dynamic>)?.map((option) => option.toString())?.toList(),
+          questionType: QuestionType.values.firstWhere(
+                (type) => type.toString() == 'QuestionType.${questionData['questionType']}',
+            orElse: () => QuestionType.multipleChoice,
+          ),
+          correctInputAns: questionData['correctInputAns'],
+        );
+
+        pythonQuestions.add(question);
+      }
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => QuestionScreen(questionss: pythonQuestions,pointsto: 20, level:-1 ), // Замените YourNewPage() на вашу новую страницу
+        ),
+      );
+
+    }
+    return pythonQuestions;
   }
 
 
@@ -105,7 +137,9 @@ _titleText(String text) {
 
     @override
     Widget build(BuildContext context) => Scaffold(
-        body: SingleChildScrollView(
+        body: _isLoading?
+            Center(child: CircularProgressIndicator())
+            :SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -180,6 +214,11 @@ _titleText(String text) {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         _titleText("Last mistakes"),
+                        TextButton(
+                            onPressed: (){
+                              getPythonQuestions();
+                            },
+                            child: Text("Train"))
                       ],
                     ),
                     SizedBox(height: 10),

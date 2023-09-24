@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => QuestionScreen(questionss: pythonQuestions ), // Замените YourNewPage() на вашу новую страницу
+        builder: (context) => QuestionScreen(questionss: pythonQuestions,pointsto: 50,level:level ), // Замените YourNewPage() на вашу новую страницу
       ),
     );
 

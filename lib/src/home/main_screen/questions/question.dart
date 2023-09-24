@@ -9,8 +9,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 class QuestionScreen extends StatefulWidget {
   final List<Question> questionss;
+  final int pointsto;
+  final int level;
 
-  QuestionScreen({this.questionss});
+  QuestionScreen({this.questionss,this.pointsto,this.level});
 
   @override
   _QuestionScreenState createState() => _QuestionScreenState();
@@ -30,10 +32,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
     totalQuestionsCount = widget.questionss.length;
     currentQuestions = List.from(widget.questionss);
   }
-  void updatePointsInFirebase(String currentUserUID) {
+  void updatePointsInFirebase(String currentUserUID,pointsToAdd) {
     final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
 
-    int pointsToAdd = 50;
+    int pointsToAdd = widget.pointsto;
 
     databaseReference.child('users/$currentUserUID/points').once().then((DatabaseEvent snapshot) {
 
@@ -41,6 +43,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
       int updatedValue = currentValue + pointsToAdd;
       databaseReference.child('users/$currentUserUID/points').set(updatedValue);
+    });
+  }
+  void updatelevelInFirebase(String currentUserUID) {
+    final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
+
+    int pointsToAdd = 50;
+
+    databaseReference.child('users/$currentUserUID/level').once().then((DatabaseEvent snapshot) {
+
+      int currentLvl = snapshot.snapshot.value ?? 0; // Если значение не существует, устанавливаем 0
+
+      currentLvl == widget.level?databaseReference.child('users/$currentUserUID/level').set(widget.level+1):null;
     });
   }
   User currentUser = FirebaseAuth.instance.currentUser;
@@ -68,7 +82,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
     if (allQuestionsAnswered && currentUser != null) {
       String currentUserUID = currentUser.uid;
-      updatePointsInFirebase(currentUserUID);
+      updatePointsInFirebase(currentUserUID, widget.pointsto);
+      updatelevelInFirebase(currentUserUID);
       return ResultScreen(score: correctAnswersCount, len: totalQuestionsCount);
     }
 
@@ -238,23 +253,38 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
 
     if (user != null) {
       final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
-      databaseReference.child('users/${user.uid}/mistakes').once().then((DatabaseEvent snapshot) {
+      final String userMistakesPath = 'users/${user.uid}/mistakes';
+
+      // Проверяем, существует ли уже такой вопрос в списке ошибок пользователя
+      databaseReference.child(userMistakesPath).once().then((DatabaseEvent snapshot) {
         List<dynamic> mistakes = snapshot.snapshot.value ?? [];
-        // Create a new list and add the mistake
-        List<dynamic> updatedMistakes = List.from(mistakes);
-        updatedMistakes.add(question.toMap());
-        if (updatedMistakes.length > 15) {
-          updatedMistakes.removeAt(0);
+
+        // Проверяем, не существует ли уже такого вопроса
+        bool questionExists = mistakes.any((mistake) {
+          // Сравниваем вопросы по полям "question" и "questionType"
+          return mistake['question'] == question.question;
+        });
+
+        if (!questionExists) {
+          // Вопрос не существует в списке ошибок, добавляем его
+          List<dynamic> updatedMistakes = List.from(mistakes);
+          updatedMistakes.add(question.toMap());
+
+          if (updatedMistakes.length > 15) {
+            updatedMistakes.removeAt(0);
+          }
+
+          // Устанавливаем обновленный список ошибок обратно в Firebase
+          databaseReference.child(userMistakesPath).set(updatedMistakes);
         }
-        // Set the updated list back to Firebase
-        databaseReference.child('users/${user.uid}/mistakes').set(updatedMistakes);
       }).catchError((error) {
         print("Ошибка при добавлении ошибки в базу данных: $error");
       });
     } else {
-      // Handle the case when the user is not authenticated
+      // Обработка случая, когда пользователь не аутентифицирован
     }
   }
+
   void _showResultDialog(bool isCorrect) {
     String congratulatoryMessage = _getRandomCongratulatoryMessage(widget.congratulatoryMessages);
     showModalBottomSheet(
@@ -523,23 +553,38 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
 
     if (user != null) {
       final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
-      databaseReference.child('users/${user.uid}/mistakes').once().then((DatabaseEvent snapshot) {
+      final String userMistakesPath = 'users/${user.uid}/mistakes';
+
+      // Проверяем, существует ли уже такой вопрос в списке ошибок пользователя
+      databaseReference.child(userMistakesPath).once().then((DatabaseEvent snapshot) {
         List<dynamic> mistakes = snapshot.snapshot.value ?? [];
-        // Create a new list and add the mistake
-        List<dynamic> updatedMistakes = List.from(mistakes);
-        updatedMistakes.add(question.toMap());
-        if (updatedMistakes.length > 15) {
-          updatedMistakes.removeAt(0);
+
+        // Проверяем, не существует ли уже такого вопроса
+        bool questionExists = mistakes.any((mistake) {
+          // Сравниваем вопросы по полям "question" и "questionType"
+          return mistake['question'] == question.question;
+        });
+
+        if (!questionExists) {
+          // Вопрос не существует в списке ошибок, добавляем его
+          List<dynamic> updatedMistakes = List.from(mistakes);
+          updatedMistakes.add(question.toMap());
+
+          if (updatedMistakes.length > 15) {
+            updatedMistakes.removeAt(0);
+          }
+
+          // Устанавливаем обновленный список ошибок обратно в Firebase
+          databaseReference.child(userMistakesPath).set(updatedMistakes);
         }
-        // Set the updated list back to Firebase
-        databaseReference.child('users/${user.uid}/mistakes').set(updatedMistakes);
       }).catchError((error) {
         print("Ошибка при добавлении ошибки в базу данных: $error");
       });
     } else {
-      // Handle the case when the user is not authenticated
+      // Обработка случая, когда пользователь не аутентифицирован
     }
   }
+
 
   void _showResultDialog(bool isCorrect) {
     String congratulatoryMessage = _getRandomCongratulatoryMessage(widget.congratulatoryMessages);

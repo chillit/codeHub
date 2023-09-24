@@ -23,7 +23,7 @@ class Question {
       'question': question,
       'options': options?? [],
       'correctAnswerIndex': correctAnswerIndex?? 0,
-      'questionType': questionType.toString(), // Convert enum to string
+      'questionType': questionType == QuestionType.textInput?"textInput":"QuestionType.multipleChoice", // Convert enum to string
       'correctInputAns': correctInputAns,
     };
   }
