@@ -141,7 +141,8 @@ class _RankingState extends State<Ranking> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Leaderboard",style: TextStyle(fontFamily: 'Feather',fontSize: 17),)
+                        Text("Leaderboard",style: TextStyle(fontFamily: 'Feather',fontSize: 17),),
+
                       ],
                     ),
                     Container(
@@ -151,18 +152,30 @@ class _RankingState extends State<Ranking> {
                         children: [
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              SizedBox(width: 50,),
-                              _titleText("$pointsProfile"),
-                              const SizedBox(width: 60),
-                              ClipOval(
-                                child: Image.asset(
-                                  userPoints>=400?"assets/images/ranks/r.png":userPoints>=350?"assets/images/ranks/i.png":userPoints>=300?"assets/images/ranks/a.png":userPoints>=250?"assets/images/ranks/d.png":userPoints>=200?"assets/images/ranks/p.png":userPoints>=150?"assets/images/ranks/g.png":userPoints>100?"assets/images/ranks/s.png":userPoints>=50?"assets/images/ranks/b.png":"assets/images/ranks/ir.png",
-                                  height: 120,
+
+                      Expanded(
+                      child: Text("$pointsProfile",style: TextStyle(fontFamily: 'Feather', fontSize: 25),
+                        textAlign: TextAlign.center,),
+    ),
+
+                              Center(
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    userPoints>=400?"assets/images/ranks/r.png":userPoints>=350?"assets/images/ranks/i.png":userPoints>=300?"assets/images/ranks/a.png":userPoints>=250?"assets/images/ranks/d.png":userPoints>=200?"assets/images/ranks/p.png":userPoints>=150?"assets/images/ranks/g.png":userPoints>100?"assets/images/ranks/s.png":userPoints>=50?"assets/images/ranks/b.png":"assets/images/ranks/ir.png",
+                                    height: 120,
+                                  ),
                                 ),
                               ),
-                              SizedBox(width: 50),
-                              Text("$userPoints pts",style: TextStyle(fontFamily: 'Feather',fontSize: 20),)
+
+                              Expanded(
+                                child: Text(
+                                  "$userPoints pts",
+                                  style: TextStyle(fontFamily: 'Feather', fontSize: 20),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
                             ],
                           ),
                           Divider(color: Colors.grey.shade500),
