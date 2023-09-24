@@ -12,7 +12,7 @@ import 'src/home/main_screen/home.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FirebaseApi().initNotifications();
+
   runApp(MyApp());
 }
 

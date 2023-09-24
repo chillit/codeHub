@@ -94,12 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const CircleAvatarIndicator(Color(0xFF55acf3),
                     "assets/images/home_screen/lesson_egg.png"),
               ),
-              const SizedBox(height: 10),
-              _textCirle("Introdução"),
               const SizedBox(height: 30),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                  SizedBox(width: 110,),
                   InkWell(
                     onTap: () async {
                       userLevel>=1?getPythonQuestions(1):null;
@@ -108,31 +107,36 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: <Widget>[
                         const CircleAvatarIndicator(Color(0xFF55acf3),
                             "assets/images/home_screen/lesson_dialog.png"),
-                        const SizedBox(height: 10),
-                        _textCirle("Suka"),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 33),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=1?getPythonQuestions(2):null;
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        const CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_airplane.png"),
-                        const SizedBox(height: 10),
-                        _textCirle("Zaebalo"),
+
                       ],
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 70,),
+                      InkWell(
+                        onTap: () async {
+                          userLevel>=1?getPythonQuestions(2):null;
+                        },
+                        child: Column(
+                          children: <Widget>[
+                            const CircleAvatarIndicator(Color(0xFF55acf3),
+                                "assets/images/home_screen/lesson_airplane.png"),
+                          ],
+                        ),
+                      ),
+
+                    ],
+                  ),
+              const SizedBox(height: 30),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                  SizedBox(width: 120,),
                   InkWell(
                     onTap: () async {
                       userLevel>=1?getPythonQuestions(4):null;
@@ -141,27 +145,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: <Widget>[
                         const CircleAvatarIndicator(Color(0xFF55acf3),
                             "assets/images/home_screen/lesson_hamburger.png"),
-                        const SizedBox(height: 10),
-                        _textCirle("Huinya"),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 33),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=1?getPythonQuestions(5):null;
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        const CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_baby.png"),
-                        const SizedBox(height: 10),
-                        _textCirle("idite nahui"),
                       ],
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 160,),
+                      InkWell(
+                        onTap: () async {
+                          userLevel>=1?getPythonQuestions(5):null;
+                        },
+                        child: Column(
+                          children: <Widget>[
+                            const CircleAvatarIndicator(Color(0xFF55acf3),
+                                "assets/images/home_screen/lesson_baby.png"),
+                          ],
+                        ),
+                      ),
+
+                    ],
+                  ),
+
               const SizedBox(height: 40),
               Row(crossAxisAlignment: CrossAxisAlignment.end, children: <
                   Widget>[
