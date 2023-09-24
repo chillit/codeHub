@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'package:duolingo/src/home/main_screen/questions/models/questions.dart';
 import 'package:duolingo/src/home/main_screen/questions/question.dart';
 
 

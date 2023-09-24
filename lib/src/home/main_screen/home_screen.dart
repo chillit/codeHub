@@ -1,7 +1,7 @@
 import 'package:duolingo/src/components/circle_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:duolingo/src/home/main_screen/questions/question.dart';
-import 'package:duolingo/src/home/main_screen/questions/models/questions.dart';
+
 import 'package:duolingo/src/home/main_screen/questions/models/question_class.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';

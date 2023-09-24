@@ -76,6 +76,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
       showModalBottomSheet(
           context: context,
           isDismissible: false,
+          enableDrag: false,
           builder: (BuildContext context){
             return Container(
               padding: EdgeInsets.all(16),
@@ -258,7 +259,8 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
     String congratulatoryMessage = _getRandomCongratulatoryMessage(widget.congratulatoryMessages);
     showModalBottomSheet(
       context: context,
-      isDismissible: false, // Запрещаем закрытие при нажатии вне окна
+      isDismissible: false,
+      enableDrag: false,// Запрещаем закрытие при нажатии вне окна
       builder: (BuildContext context) {
         return !isCorrect?Container(
           height: 150,
@@ -543,7 +545,8 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
     String congratulatoryMessage = _getRandomCongratulatoryMessage(widget.congratulatoryMessages);
     showModalBottomSheet(
       context: context,
-      isDismissible: false, // Запрещаем закрытие при нажатии вне окна
+      isDismissible: false,
+      enableDrag: false,// Запрещаем закрытие при нажатии вне окна
       builder: (BuildContext context) {
         return !isCorrect?Container(
           height: 150,

@@ -129,6 +129,7 @@ _titleText(String text) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     _titleText("Information"),
+                    SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -141,7 +142,7 @@ _titleText(String text) {
                             width: 170,
                             child: ListTile(
                                 leading: Icon(
-                                  Icons.score,
+                                  Icons.local_fire_department_rounded,
                                   color: Colors.amber,
                                 ),
                                 title: Text(
@@ -157,7 +158,7 @@ _titleText(String text) {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            height: 60,
+                            height: 50,
                             width: 170,
                             child: ListTile(
                                 leading: Icon(
