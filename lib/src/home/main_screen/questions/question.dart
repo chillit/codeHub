@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:duolingo/src/home/main_screen/home.dart';
 import 'package:duolingo/src/home/main_screen/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +7,188 @@ import 'package:duolingo/src/home/main_screen/questions/models/question_class.da
 import 'package:duolingo/src/home/main_screen/questions/models/result_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+
+
+class VideoScreen extends StatefulWidget {
+  final List<Question> questionss;
+  final int pointsto;
+  final int level;
+  final String link;
+  VideoScreen({this.pointsto,this.level,this.questionss,this.link});
+  @override
+  State<VideoScreen> createState() => _VideoScreenState();
+}
+
+class _VideoScreenState extends State<VideoScreen> {
+  void _showConfirmation(){
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        builder: (BuildContext context){
+          return Container(
+            padding: EdgeInsets.all(16),
+            height: 240,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 10,),
+                Text('Are you sure you want to quit?',style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),),
+                SizedBox(height: 10,),
+                Text('All progress wil be lost',style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.grey
+                ),),
+                SizedBox(height: 20,),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed:
+                        (){
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('STAY',style: TextStyle(
+                        fontFamily: 'Feather',
+                        fontSize: 16
+                    ),),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF7e7e94),
+                      onPrimary: Colors.white, // text color
+                      elevation: 5, // shadow elevation// button padding
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14), // button border radius
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30,),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Home()),
+                    );
+                  },
+                  child: Text(
+                      'QUIT',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF7e7e94), // Text color
+                        // Underline the text
+                      )
+                  ),
+                )
+              ],
+            ),
+          );
+        }
+    );
+  }
+  YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: '${widget.link}',
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.close_sharp,
+            color: Colors.grey, // Set the color of the back arrow to red
+          ),
+          onPressed: () {
+            _showConfirmation();
+          },
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: ProgressIndicator(progress: 0,),
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: YoutubePlayer(
+                controller: _controller,
+              ),
+            ),
+          ),
+          Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(17)
+                ),
+                margin: EdgeInsetsDirectional.only(start: 20,end: 20,bottom: 20),
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF7e4a3b),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    _controller.pause(); // Pause the video when the button is pressed
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuestionScreen(
+                          questionss: widget.questionss,
+                          pointsto: widget.pointsto,
+                          level: widget.level,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text('Продолжить',style: TextStyle(
+                      fontFamily: 'Feather',
+                      fontSize: 15
+                  ),),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
 class QuestionScreen extends StatefulWidget {
   final List<Question> questionss;
   final int pointsto;
@@ -266,7 +448,7 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
         });
 
         if (!questionExists) {
-          // Вопрос не существует в списке ошибок, добавляем его
+          // Вопрос не существует в списке ошибок, добавляем
           List<dynamic> updatedMistakes = List.from(mistakes);
           updatedMistakes.add(question.toMap());
 
@@ -274,7 +456,6 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
             updatedMistakes.removeAt(0);
           }
 
-          // Устанавливаем обновленный список ошибок обратно в Firebase
           databaseReference.child(userMistakesPath).set(updatedMistakes);
         }
       }).catchError((error) {

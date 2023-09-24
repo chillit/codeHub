@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     for (final questionData in questionsData) {
       final question = Question(
-        question: questionData['question'],
+        question: questionData['question'].substring(2),
         correctAnswerIndex: questionData['correctAnswerIndex'],
         options: (questionData['options'] as List<dynamic>)?.map((option) => option.toString())?.toList(),
         questionType: QuestionType.values.firstWhere(
@@ -62,10 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
       pythonQuestions.add(question);
     }
+    DatabaseEvent videoRef = await databaseReference.child('videos/${userLanguage}/$level/video').once();
+    final videoValue = videoRef.snapshot.value;
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => QuestionScreen(questionss: pythonQuestions,pointsto: 50,level:level ), // Замените YourNewPage() на вашу новую страницу
+        builder: (context) => VideoScreen(questionss: pythonQuestions,pointsto: 50,level:level,link: videoValue, ), // Замените YourNewPage() на вашу новую страницу
       ),
     );
 

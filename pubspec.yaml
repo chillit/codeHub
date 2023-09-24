@@ -28,7 +28,7 @@ dependencies:
   awesome_dialog: ^3.1.0
   firebase_messaging: ^14.6.8
   cupertino_icons: ^0.1.2
-
+  youtube_player_flutter: ^8.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
