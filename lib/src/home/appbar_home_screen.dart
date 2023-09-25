@@ -50,7 +50,7 @@ class _AppBarHomeScreenState extends State<AppBarHomeScreen> {
     else if(language=='javaScript')
       return 'assets/images/Javascript.png';
 
-    else if(language=='C#')
+    else if(language=='CS')
       return 'assets/images/C_sharp.png';
 
     else

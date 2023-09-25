@@ -172,7 +172,7 @@ _titleText(String text) {
                     SizedBox(height: 10,),
                     _titleText("Information:"),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Card(
                           child: Container(
@@ -180,7 +180,7 @@ _titleText(String text) {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             height: 50,
-                            width: 170,
+                            width: MediaQuery.of(context).size.width*0.40,
                             child: ListTile(
                                 leading: Icon(
                                   Icons.local_fire_department_rounded,
@@ -195,23 +195,25 @@ _titleText(String text) {
                           ),
                         ),
                         Card(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+                          child: Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              height: 50,
+                              width: MediaQuery.of(context).size.width*0.40,
+                              child: ListTile(
+                                  leading: Icon(
+                                    Icons.language,
+                                    color: Colors.amber,
+                                  ),
+                                  title: Text(
+                                    "$language",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  )),
                             ),
-                            height: 50,
-                            width: 170,
-                            child: ListTile(
-                                leading: Icon(
-                                  Icons.language,
-                                  color: Colors.amber,
-                                ),
-                                title: Text(
-                                  "$language",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                )),
                           ),
                         ),
                       ],
