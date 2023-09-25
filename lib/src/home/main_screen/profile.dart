@@ -5,6 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:duolingo/src/home/main_screen/questions/models/question_class.dart';
 
+import '../login/login_page.dart';
+
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
@@ -153,16 +155,25 @@ _titleText(String text) {
               children: <Widget>[
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(width: 20,),
-                    _titleText(name),
-                    const SizedBox(width: 70),
-                    ClipOval(
-                      child: Image.asset(
-                        userPoints>=400?"assets/images/ranks/r.png":userPoints>=350?"assets/images/ranks/i.png":userPoints>=300?"assets/images/ranks/a.png":userPoints>=250?"assets/images/ranks/d.png":userPoints>=200?"assets/images/ranks/p.png":userPoints>=150?"assets/images/ranks/g.png":userPoints>100?"assets/images/ranks/s.png":userPoints>=50?"assets/images/ranks/b.png":"assets/images/ranks/ir.png",
-                        height: 120,
+                    Expanded(
+                      child: Text(
+                        name,
+                        style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold,fontFamily: 'Feather'),
+                        textAlign: TextAlign.center,
                       ),
                     ),
+                    
+                    Center(
+                      child: ClipOval(
+                        child: Image.asset(
+                          userPoints>=400?"assets/images/ranks/r.png":userPoints>=350?"assets/images/ranks/i.png":userPoints>=300?"assets/images/ranks/a.png":userPoints>=250?"assets/images/ranks/d.png":userPoints>=200?"assets/images/ranks/p.png":userPoints>=150?"assets/images/ranks/g.png":userPoints>100?"assets/images/ranks/s.png":userPoints>=50?"assets/images/ranks/b.png":"assets/images/ranks/ir.png",
+                          height: 120,
+                        ),
+                      ),
+                    ),
+                    Expanded(child: SizedBox(width: 30,))
                   ],
                 ),
                 Divider(color: Colors.grey.shade500),
@@ -246,6 +257,7 @@ _titleText(String text) {
                         );
                       },
                     ),
+                    SizedBox(height: 20,),
                     Row(
                       children: <Widget>[
                         Expanded(
@@ -262,6 +274,7 @@ _titleText(String text) {
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF7d0c0c),
+                              fontFamily: 'Feather'
                             ),
                           ),
                         ),
@@ -286,8 +299,8 @@ _titleText(String text) {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text('Подтверждение выхода'),
-                                content: Text('Вы уверены, что хотите выйти из аккаунта?'),
+                                title: Text('Log Out',style: TextStyle(fontFamily: "Feather"),),
+                                content: Text('Are you sure you want to exit?',style: TextStyle(fontFamily: 'Feather'),),
                                 actionsPadding: EdgeInsets.symmetric(horizontal: 16.0),
                                 buttonPadding: EdgeInsets.all(0),
                                 actions: [
@@ -298,13 +311,9 @@ _titleText(String text) {
                                         TextButton(
                                           onPressed: () async {
                                             Navigator.of(context).pop();
-                                            try {
-                                              await _auth.signOut();
-                                            } catch (error) {
-                                              print('Ошибка при выходе из аккаунта: $error');
-                                            }
+
                                           },
-                                          child: Text('Нет'),
+                                          child: Text('No',style: TextStyle(fontFamily: 'Feather',color: Colors.grey),),
                                         ),
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
@@ -312,7 +321,12 @@ _titleText(String text) {
                                             padding: EdgeInsets.symmetric(horizontal: 16.0),
                                           ),
                                           onPressed: () async {
-                                            Navigator.of(context).pop();
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => LoginPage(),
+                                              ),
+                                            );
 
                                             try {
                                               await _auth.signOut();
@@ -320,7 +334,7 @@ _titleText(String text) {
                                               print('Ошибка при выходе из аккаунта: $error');
                                             }
                                           },
-                                          child: Text('Да'),
+                                          child: Text('Yes',style: TextStyle(fontFamily: 'Feather'),),
                                         ),
                                       ],
                                     ),
@@ -332,8 +346,8 @@ _titleText(String text) {
 
                         },
                         child: Text(
-                          'Выход',
-                          style: TextStyle(fontSize: 20.0),
+                          'Log Out',
+                          style: TextStyle(fontSize: 16.0,fontFamily: 'Feather'),
                         ),
                       ),
                     ),
