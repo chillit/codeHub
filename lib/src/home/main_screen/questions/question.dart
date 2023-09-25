@@ -15,7 +15,8 @@ class VideoScreen extends StatefulWidget {
   final int pointsto;
   final int level;
   final String link;
-  VideoScreen({this.pointsto,this.level,this.questionss,this.link});
+  final String text;
+  VideoScreen({this.pointsto,this.level,this.questionss,this.link,this.text});
   @override
   State<VideoScreen> createState() => _VideoScreenState();
 }
@@ -72,6 +73,7 @@ class _VideoScreenState extends State<VideoScreen> {
                 SizedBox(height: 30,),
                 GestureDetector(
                   onTap: () {
+                    _controller.pause();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -121,7 +123,7 @@ class _VideoScreenState extends State<VideoScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.close_sharp,
-            color: Colors.grey, // Set the color of the back arrow to red
+            color: Colors.grey, // Установите цвет стрелки "назад" на красный
           ),
           onPressed: () {
             _showConfirmation();
@@ -139,53 +141,62 @@ class _VideoScreenState extends State<VideoScreen> {
       body: Column(
         children: [
           Expanded(
-            child: Center(
-              child: YoutubePlayer(
-                controller: _controller,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Center(
+                    child: YoutubePlayer(
+                      controller: _controller,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(17)
-                ),
-                margin: EdgeInsetsDirectional.only(start: 20,end: 20,bottom: 20),
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF7e4a3b),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(17.0),
-                    ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(17),
+              ),
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF7e4a3b),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(17.0),
                   ),
-                  onPressed: () {
-                    _controller.pause(); // Pause the video when the button is pressed
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuestionScreen(
-                          questionss: widget.questionss,
-                          pointsto: widget.pointsto,
-                          level: widget.level,
-                        ),
+                ),
+                onPressed: () {
+                  _controller.pause();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TextScreen(
+                        text: widget.text,
+                        questionss: widget.questionss,
+                        pointsto: widget.pointsto,
+                        level: widget.level,
                       ),
-                    );
-                  },
-                  child: Text('Продолжить',style: TextStyle(
-                      fontFamily: 'Feather',
-                      fontSize: 15
-                  ),),
+                    ),
+                  );
+                },
+                child: Text(
+                  'Продолжить',
+                  style: TextStyle(
+                    fontFamily: 'Feather',
+                    fontSize: 15,
+                  ),
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),
     );
   }
+
 }
 
 
@@ -217,8 +228,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
   void updatePointsInFirebase(String currentUserUID,pointsToAdd) {
     final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
 
-    int pointsToAdd = widget.pointsto;
-
     databaseReference.child('users/$currentUserUID/points').once().then((DatabaseEvent snapshot) {
 
       int currentValue = snapshot.snapshot.value ?? 0; // Если значение не существует, устанавливаем 0
@@ -237,6 +246,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
       int currentLvl = snapshot.snapshot.value ?? 0; // Если значение не существует, устанавливаем 0
 
       currentLvl == widget.level?databaseReference.child('users/$currentUserUID/level').set(widget.level+1):null;
+      if (currentLvl == widget.level){
+        databaseReference.child('users/$currentUserUID/level').set(widget.level+1);
+        updatePointsInFirebase(currentUserUID, 50);
+
+      }
+      else{
+        updatePointsInFirebase(currentUserUID, 10);
+      }
     });
   }
   User currentUser = FirebaseAuth.instance.currentUser;
@@ -264,7 +281,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
     if (allQuestionsAnswered && currentUser != null) {
       String currentUserUID = currentUser.uid;
-      updatePointsInFirebase(currentUserUID, widget.pointsto);
       updatelevelInFirebase(currentUserUID);
       return ResultScreen(score: correctAnswersCount, len: totalQuestionsCount);
     }
@@ -973,3 +989,180 @@ class ProgressIndicator extends StatelessWidget {
     );
   }
 }
+
+class TextScreen extends StatefulWidget {
+  final List<Question> questionss;
+  final int pointsto;
+  final int level;
+  final String text;
+  TextScreen({this.pointsto,this.level,this.questionss,this.text});
+  @override
+  State<TextScreen> createState() => _TextScreenState();
+}
+
+class _TextScreenState extends State<TextScreen> {
+  void _showConfirmation(){
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        builder: (BuildContext context){
+          return Container(
+            padding: EdgeInsets.all(16),
+            height: 240,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 10,),
+                Text('Are you sure you want to quit?',style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),),
+                SizedBox(height: 10,),
+                Text('All progress wil be lost',style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.grey
+                ),),
+                SizedBox(height: 20,),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed:
+                        (){
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('STAY',style: TextStyle(
+                        fontFamily: 'Feather',
+                        fontSize: 16
+                    ),),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF7e7e94),
+                      onPrimary: Colors.white, // text color
+                      elevation: 5, // shadow elevation// button padding
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14), // button border radius
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30,),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Home()),
+                    );
+                  },
+                  child: Text(
+                      'QUIT',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF7e7e94), // Text color
+                        // Underline the text
+                      )
+                  ),
+                )
+              ],
+            ),
+          );
+        }
+    );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.close_sharp,
+            color: Colors.grey, // Установите цвет стрелки "назад" на красный
+          ),
+          onPressed: () {
+            _showConfirmation();
+          },
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: ProgressIndicator(progress: 0,),
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(16.0), // Отступы по краям
+                    padding: EdgeInsets.all(16.0), // Внутренний отступ
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0), // Закругленные углы
+                      border: Border.all(
+                        color: Colors.black, // Цвет границы
+                        width: 1.0, // Ширина границы
+                      ),
+                    ),
+                    child: Text(widget.text),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(17),
+              ),
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF7e4a3b),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(17.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QuestionScreen(
+                        questionss: widget.questionss,
+                        pointsto: widget.pointsto,
+                        level: widget.level,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  'Продолжить',
+                  style: TextStyle(
+                    fontFamily: 'Feather',
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+}
+

@@ -104,6 +104,8 @@ flutter:
   - assets/images/white.png
   - assets/images/home.gif
   - assets/images/Trophy.gif
+  - assets/images/lock.png
+  - assets/images/mark.png
   
   
   #  - images/a_dot_ham.jpeg

@@ -116,6 +116,12 @@ class _ProfileState extends State<Profile> {
 
         pythonQuestions.add(question);
       }
+      final DatabaseReference reference = FirebaseDatabase.instance.reference().child("users/$useruid/mistakes");
+      reference.remove().then((_) {
+        print('Папка успешно удалена');
+      }).catchError((error) {
+        print('Ошибка при удалении папки: $error');
+      });
       await Navigator.push(
         context,
         MaterialPageRoute(
