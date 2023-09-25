@@ -367,7 +367,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
       ),
       body: Column(
         children: [
-          Text(question.question),
+          Container(
+            margin: EdgeInsets.all(16.0), // Отступы по краям
+            padding: EdgeInsets.all(16.0), // Внутренний отступ
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.0), // Закругленные углы
+              border: Border.all(
+                color: Colors.black, // Цвет границы
+                width: 1.0, // Ширина границы
+              ),
+            ),
+            child: Text(question.question,style: TextStyle(fontFamily: 'Geo',fontSize: 20),),
+          ),
           if (question.questionType == QuestionType.multipleChoice)
             MultipleChoiceQuestion(
               questions: currentQuestions,
@@ -581,8 +592,7 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
               final option = entry.value;
 
               final isSelected = selectedOptionIndex == index;
-              final color = isSelected ? Colors.blue : null;
-
+              final color = isSelected ? Colors.blueAccent.withOpacity(0.65) : null;
               return GestureDetector(
                 onTap: () {
                   setState(() {
@@ -594,24 +604,18 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
                   padding: EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.black,
-                      width: 1.0,
+                      color: Colors.blueGrey,
+                      width: 3.0,
                     ),
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(13.0),
                     color: color,
                   ),
                   child: Row(
                     children: [
-                      Text(
-                        '${index + 1}', // Отображаем номер ответа
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      SizedBox(width: 8.0), // Добавляем пространство между номером и текстом
+                      SizedBox(height: isSelected? 25: 20,),
                       Expanded(
                         child: Text(
+
                           option,
                           textAlign: TextAlign.center, // Выравниваем текст по центру
                           style: TextStyle(
@@ -619,6 +623,7 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                             fontSize: 16.0,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -867,44 +872,63 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextField(
-            controller: answerController,
-            decoration: InputDecoration(
-                labelText: 'Your Answer',
-                filled: true,
-                fillColor: Colors.transparent
-            ),
-          ),
-          Column(
-            children: [
-
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(17)
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              margin: EdgeInsets.all(14),
+              padding: EdgeInsets.only(left: 5),
+              height: MediaQuery.of(context).size.width*0.80,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1.0,
                 ),
-                margin: EdgeInsetsDirectional.only(start: 20,end: 20,bottom: 20),
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF7e4a3b),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(17.0),
+                borderRadius: BorderRadius.circular(8.0),
+                color: Colors.white,
+              ),
+              child: TextField(
+                style: TextStyle(
+                  fontSize: 16
+                ),
+                controller: answerController,
+                decoration: InputDecoration(
+                    hintText:'Напишите сюда свой ответ' ,
+                    hintStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
                     ),
-                  ),
-                  child: Text('CHECK',style: TextStyle(
-                      fontFamily: 'Feather',
-                      fontSize: 15
-                        ),),
-                  onPressed:  isButtonDisabled ? null : checkAnswer,
+                    filled: true,
+                    fillColor: Colors.transparent,
+                    border: InputBorder.none,
                 ),
               ),
-            ],
-          ),
-        ],
+            ),
+            SizedBox(height: 20,),
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(17)
+              ),
+              margin: EdgeInsetsDirectional.only(start: 20,end: 20,bottom: 20),
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF7e4a3b),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(17.0),
+                  ),
+                ),
+                child: Text('CHECK',style: TextStyle(
+                    fontFamily: 'Feather',
+                    fontSize: 15
+                      ),),
+                onPressed:  isButtonDisabled ? null : checkAnswer,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

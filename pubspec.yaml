@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -103,6 +103,7 @@ flutter:
   - assets/images/ranks/s.png
   - assets/images/white.png
   - assets/images/home.gif
+  - assets/images/Trophy.gif
   
   
   #  - images/a_dot_ham.jpeg
@@ -128,6 +129,9 @@ flutter:
     - family: Feather
       fonts:
         - asset: fonts/feather_bold.ttf
+    - family: Geo
+      fonts:
+        - asset: fonts/ofont.ru_Geologica.ttf
 
   #   - family: Trajan Pro
   #     fonts:

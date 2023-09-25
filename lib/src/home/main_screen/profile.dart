@@ -163,8 +163,8 @@ _titleText(String text) {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    _titleText("Information"),
                     SizedBox(height: 10,),
+                    _titleText("Information:"),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
