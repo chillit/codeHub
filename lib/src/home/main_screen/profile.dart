@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
             recentMistakes = List<Question>.from(
               (data['mistakes'] ?? []).map(
                     (mistakeData) => Question(
-                  question: (mistakeData['question'] ?? '').substring(2), // Начиная с третьего символа
+                  question: (mistakeData['question'] ?? '').substring(1), // Начиная с третьего символа
                   options: List<String>.from(mistakeData['options'] ?? []),
                   correctAnswerIndex: mistakeData['correctAnswerIndex'] ?? 0,
                   questionType: QuestionType.values.firstWhere(
@@ -245,7 +245,98 @@ _titleText(String text) {
                           },
                         );
                       },
-                    )
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            height: 1.0,
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(7, 0, 7, 0),
+                          child: Text(
+                            'Dangerous Zone',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF7d0c0c),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 1.0, // Высота разделителя
+                            color: Colors.grey.withOpacity(0.5), // Цвет с прозрачностью
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF7d0c0c),
+                          padding: EdgeInsets.all(16.0),
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Подтверждение выхода'),
+                                content: Text('Вы уверены, что хотите выйти из аккаунта?'),
+                                actionsPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                                buttonPadding: EdgeInsets.all(0),
+                                actions: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 12, 0, 8),
+                                    child: ButtonBar(
+                                      children: [
+                                        TextButton(
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                            try {
+                                              await _auth.signOut();
+                                            } catch (error) {
+                                              print('Ошибка при выходе из аккаунта: $error');
+                                            }
+                                          },
+                                          child: Text('Нет'),
+                                        ),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Color(0xFF7d0c0c),
+                                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                          ),
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+
+                                            try {
+                                              await _auth.signOut();
+                                            } catch (error) {
+                                              print('Ошибка при выходе из аккаунта: $error');
+                                            }
+                                          },
+                                          child: Text('Да'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+                        },
+                        child: Text(
+                          'Выход',
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
