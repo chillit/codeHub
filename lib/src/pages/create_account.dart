@@ -260,6 +260,7 @@ class _CreateUserState extends State<CreateUser> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           elevation: 0.0,
@@ -624,6 +625,7 @@ class _LogINaccountState extends State<LogINaccount> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           elevation: 0,
