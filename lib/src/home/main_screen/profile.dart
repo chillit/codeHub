@@ -234,11 +234,19 @@ _titleText(String text) {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         _titleText("Last mistakes"),
-                        TextButton(
-                            onPressed: (){
-                              getPythonQuestions();
-                            },
-                            child: Text("Train"))
+                        Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(13),
+                            border: Border.all(width: 0.8,color: Colors.grey),
+
+                          ),
+                          child: TextButton(
+                              onPressed: (){
+                                getPythonQuestions();
+                              },
+                              child: Text("TRAIN",style: TextStyle(fontFamily: "Feather",fontSize: 14,color: Colors.orange),)),
+                        )
                       ],
                     ),
                     SizedBox(height: 10),
