@@ -531,7 +531,7 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
 
               SizedBox(
                 width: double.infinity,
-                height: 40,
+                height: 38,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor:  Colors.red,
@@ -825,7 +825,7 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
               SizedBox(height: 20.0),
               SizedBox(
                 width: double.infinity,
-                height: 40,
+                height: 38,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor:  Colors.red,
