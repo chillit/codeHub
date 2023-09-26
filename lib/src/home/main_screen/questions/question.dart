@@ -104,7 +104,7 @@ class _VideoScreenState extends State<VideoScreen> {
     _controller = YoutubePlayerController(
       initialVideoId: '${widget.link}',
       flags: YoutubePlayerFlags(
-        autoPlay: true,
+        autoPlay: false,
         mute: false,
       ),
     );
@@ -116,10 +116,7 @@ class _VideoScreenState extends State<VideoScreen> {
     super.dispose();
   }
   onPressedContinueButton() {
-    setState(() {
-      continueButtonPressed = true; // Устанавливаем флаг, что кнопка "Продолжить" была нажата
-    });
-    _controller.pause(); // Приостанавливаем видео при нажатии кнопки "Продолжить"
+    _controller.pause();
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -140,7 +137,7 @@ class _VideoScreenState extends State<VideoScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.close_sharp,
-            color: Colors.grey, // Установите цвет стрелки "назад" на красный
+            color: Colors.grey,
           ),
           onPressed: () {
             _showConfirmation();
