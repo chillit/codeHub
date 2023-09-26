@@ -115,6 +115,23 @@ class _VideoScreenState extends State<VideoScreen> {
     _controller.dispose();
     super.dispose();
   }
+  onPressedContinueButton() {
+    setState(() {
+      continueButtonPressed = true; // Устанавливаем флаг, что кнопка "Продолжить" была нажата
+    });
+    _controller.pause(); // Приостанавливаем видео при нажатии кнопки "Продолжить"
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TextScreen(
+          text: widget.text,
+          questionss: widget.questionss,
+          pointsto: widget.pointsto,
+          level: widget.level,
+        ),
+      ),
+    );
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -169,18 +186,7 @@ class _VideoScreenState extends State<VideoScreen> {
                   ),
                 ),
                 onPressed: () {
-                  _controller.pause();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TextScreen(
-                        text: widget.text,
-                        questionss: widget.questionss,
-                        pointsto: widget.pointsto,
-                        level: widget.level,
-                      ),
-                    ),
-                  );
+                  onPressedContinueButton();
                 },
                 child: Text(
                   'Продолжить',
@@ -531,7 +537,7 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
 
               SizedBox(
                 width: double.infinity,
-                height: 40,
+                height: 38,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor:  Colors.red,
@@ -825,7 +831,7 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
               SizedBox(height: 20.0),
               SizedBox(
                 width: double.infinity,
-                height: 40,
+                height: 38,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor:  Colors.red,

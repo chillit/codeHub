@@ -48,6 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
   Future<List<Question>> getPythonQuestions(level) async {
+    setState(() {
+      isLoading = true;
+    });
     final databaseReference = FirebaseDatabase.instance.reference();
     final DatabaseEvent dataSnapshot = await databaseReference.child('allq/$userLanguage/$level').once();
 
@@ -73,6 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
     DatabaseEvent textRef = await databaseReference.child('texts/${userLanguage}/$level/1').once();
     final textValue = textRef.snapshot.value;
     String formattedText = textValue.toString().replaceAll(r'\n', '\n');
+    setState(() {
+      isLoading = false;
+    });
     await Navigator.push(
       context,
       MaterialPageRoute(
