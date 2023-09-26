@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: isLoading?
-          Center(child: CircularProgressIndicator(),):
+      Center(child: CircularProgressIndicator(),):
       ListView(
         children: <Widget>[
           const SizedBox(height: 38),
