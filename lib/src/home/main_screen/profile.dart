@@ -106,7 +106,7 @@ class _ProfileState extends State<Profile> {
 
       for (final questionData in questionsData) {
         final question = Question(
-          question: (questionData['question']??"").substring(2),
+          question: (questionData['question']??""),
           correctAnswerIndex: questionData['correctAnswerIndex'],
           options: (questionData['options'] as List<dynamic>)?.map((option) => option.toString())?.toList(),
           questionType: QuestionType.values.firstWhere(
