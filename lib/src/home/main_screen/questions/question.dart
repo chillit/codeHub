@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:duolingo/src/home/main_screen/home.dart';
 import 'package:duolingo/src/home/main_screen/home_screen.dart';
@@ -7,6 +8,8 @@ import 'package:duolingo/src/home/main_screen/questions/models/question_class.da
 import 'package:duolingo/src/home/main_screen/questions/models/result_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:just_audio/just_audio.dart';
+
 
 
 
@@ -188,7 +191,7 @@ class _VideoScreenState extends State<VideoScreen> {
                 child: Text(
                   'Продолжить',
                   style: TextStyle(
-                    fontFamily: 'Feather',
+                    fontFamily: 'Geo',
                     fontSize: 15,
                   ),
                 ),
@@ -454,6 +457,7 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
 
   int selectedOptionIndex;
   bool isAnswerCorrect = false;
+  AudioPlayer audioPlayer = AudioPlayer();
 
   String _getRandomCongratulatoryMessage(List<String> messages) {
     final Random random = Random();
@@ -496,6 +500,24 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
     }
   }
 
+  void playSound(bool isCorrect) async {
+    // Change the prefix to your audio assets folder
+
+    try {
+      if (isCorrect) {
+        await audioPlayer.setAsset('assets/Correct_answer.mp3');
+        await audioPlayer.play();
+        print("audio played");
+      } else {
+        await audioPlayer.setAsset('assets/Wrong_answer.mp3');
+        await audioPlayer.play();
+        print("audio");// Replace with your incorrect sound file
+      }
+    } catch (e) {
+      print("Error playing audio: $e");
+    }
+  }
+
   void _showResultDialog(bool isCorrect) {
     String congratulatoryMessage = _getRandomCongratulatoryMessage(widget.congratulatoryMessages);
     showModalBottomSheet(
@@ -522,7 +544,7 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
                     children: <Widget>[
                       Expanded(child:Text(
                            '${widget.question.options[widget.question.correctAnswerIndex]}',
-                        style: TextStyle(fontSize: 16.0,color: Colors.red, fontFamily: 'Feather'),
+                        style: TextStyle(fontSize: 16.0,color: Colors.red, fontFamily: 'Geo'),
                         overflow: TextOverflow.ellipsis,
                       )
                       )
@@ -698,16 +720,11 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
           widget.questions.add(widget.question);
         });
       }
-
+      playSound(isCorrect);
       _showResultDialog(isCorrect);
     }
   }
-  void skip(){
-    setState(() {
-      widget.questions.add(widget.question);
-    });
-    _showResultDialog(false);
-  }
+
 }
 
 class TextInputQuestion extends StatefulWidget {
@@ -715,6 +732,8 @@ class TextInputQuestion extends StatefulWidget {
   final Question question;
   final Function() onNextQuestion;
   final Function() onAnswerCorrect;
+
+
 
   final List<String> congratulatoryMessages = [
     'Good Job!',
@@ -735,6 +754,8 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
   final TextEditingController answerController = TextEditingController();
   bool isAnswerCorrect;
   bool isButtonDisabled = true;
+  AudioPlayer audioPlayer = AudioPlayer();
+
   String _getRandomCongratulatoryMessage(List<String> messages) {
     final Random random = Random();
     return messages[random.nextInt(messages.length)];
@@ -742,10 +763,14 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
 
 
 
+
+
+
   @override
   void initState() {
     super.initState();
     answerController.addListener(_checkTextField);
+
   }
 
   void _checkTextField() {
@@ -790,8 +815,27 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
     }
   }
 
+  void playSound(bool isCorrect) async {
+    // Change the prefix to your audio assets folder
 
-  void _showResultDialog(bool isCorrect) {
+    try {
+      if (isCorrect) {
+        await audioPlayer.setAsset('assets/Correct_answer.mp3');
+        await audioPlayer.play();
+        print("audio played");
+      } else {
+        await audioPlayer.setAsset('assets/Wrong_answer.mp3');
+        await audioPlayer.play();
+        print("audio");// Replace with your incorrect sound file
+      }
+    } catch (e) {
+      print("Error playing audio: $e");
+    }
+  }
+
+
+  void _showResultDialog(bool isCorrect) async {
+
     String congratulatoryMessage = _getRandomCongratulatoryMessage(widget.congratulatoryMessages);
     showModalBottomSheet(
       context: context,
@@ -808,7 +852,7 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
             children: [
               Text(
                 'Correct Solution:',
-                style: TextStyle(fontSize: 20.0, fontFamily: 'Feather',color: Colors.red),
+                style: TextStyle(fontSize: 20.0, fontFamily: 'Geo',color: Colors.red),
               ),
               SizedBox(height: 12.0),
               Column(
@@ -951,13 +995,11 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
       ),
     );
   }
-  void skip(){
-    setState(() {
-      widget.questions.add(widget.question);
-    });
-    _showResultDialog(false);
-  }
-  void checkAnswer() {
+
+
+
+
+  Future<void> checkAnswer()  async{
     final userAnswer = answerController.text;
     bool isCorrect = userAnswer == widget.question.correctInputAns;
     setState(() {
@@ -965,7 +1007,9 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
     });
 
     if (isCorrect) {
-      widget.onAnswerCorrect(); // Increase the correct answers count
+
+      widget.onAnswerCorrect();
+      // Increase the correct answers count
     } else {
       print(widget.question.toMap());
       addMistakeToFirebase(widget.question);
@@ -973,9 +1017,12 @@ class _TextInputQuestionState extends State<TextInputQuestion> {
         widget.questions.add(widget.question);
       });
     }
-
+    playSound(isCorrect);
     _showResultDialog(isCorrect);
+
   }
+
+
 }
 class ProgressIndicator extends StatelessWidget {
   final double progress;
@@ -1155,7 +1202,7 @@ class _TextScreenState extends State<TextScreen> {
                 child: Text(
                   'Продолжить',
                   style: TextStyle(
-                    fontFamily: 'Feather',
+                    fontFamily: 'Geo',
                     fontSize: 15,
                   ),
                 ),
