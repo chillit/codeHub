@@ -65,7 +65,7 @@ class _ChooseLanguageState extends State<ChooseLanguage> {
                 children: [
                   SquareImageTextWidget(imageUrl: 'assets/images/Javascript.png',text: 'JavaScript',language:'javaScript',),
                   SizedBox(width: 20,),
-                  SquareImageTextWidget(imageUrl: 'assets/images/C_sharp.png',text: 'C#',language: 'C#',)
+                  SquareImageTextWidget(imageUrl: 'assets/images/C_sharp.png',text: 'C#',language: 'CS',)
                 ],)
             ],
           ),

@@ -50,7 +50,7 @@ class _ProfileState extends State<Profile> {
             recentMistakes = List<Question>.from(
               (data['mistakes'] ?? []).map(
                     (mistakeData) => Question(
-                  question: (mistakeData['question'] ?? '').substring(1), // Начиная с третьего символа
+                  question: (mistakeData['question'] ?? ''), // Начиная с третьего символа
                   options: List<String>.from(mistakeData['options'] ?? []),
                   correctAnswerIndex: mistakeData['correctAnswerIndex'] ?? 0,
                   questionType: QuestionType.values.firstWhere(
@@ -168,7 +168,7 @@ _titleText(String text) {
                     Center(
                       child: ClipOval(
                         child: Image.asset(
-                          userPoints>=400?"assets/images/ranks/r.png":userPoints>=350?"assets/images/ranks/i.png":userPoints>=300?"assets/images/ranks/a.png":userPoints>=250?"assets/images/ranks/d.png":userPoints>=200?"assets/images/ranks/p.png":userPoints>=150?"assets/images/ranks/g.png":userPoints>100?"assets/images/ranks/s.png":userPoints>=50?"assets/images/ranks/b.png":"assets/images/ranks/ir.png",
+                          userPoints>=400?"assets/images/ranks/r.png":userPoints>=350?"assets/images/ranks/i.png":userPoints>=300?"assets/images/ranks/a.png":userPoints>=250?"assets/images/ranks/d.png":userPoints>=200?"assets/images/ranks/p.png":userPoints>=150?"assets/images/ranks/g.png":userPoints>=100?"assets/images/ranks/s.png":userPoints>=50?"assets/images/ranks/b.png":"assets/images/ranks/ir.png",
                           height: 120,
                         ),
                       ),
@@ -219,7 +219,7 @@ _titleText(String text) {
                                     color: Colors.amber,
                                   ),
                                   title: Text(
-                                    "$language",
+                                    language == "CS"?"C#":"$language",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),

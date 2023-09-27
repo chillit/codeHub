@@ -249,7 +249,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
       int currentLvl = snapshot.snapshot.value ?? 0; // Если значение не существует, устанавливаем 0
 
       currentLvl == widget.level?databaseReference.child('users/$currentUserUID/level').set(widget.level+1):null;
-      if (currentLvl == widget.level){
+      if (currentLvl == widget.level+1){
         databaseReference.child('users/$currentUserUID/level').set(widget.level+1);
         updatePointsInFirebase(currentUserUID, 50);
 
@@ -406,9 +406,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 goToNextQuestion();
               },
               onAnswerCorrect: () {
-                setState(() {
-                  correctAnswersCount++;
-                });
+                if(currentQuestionIndex < totalQuestionsCount){
+                  setState(() {
+                    correctAnswersCount++;
+                  });
+                }
               },
             )
           else if (question.questionType == QuestionType.textInput)
@@ -420,9 +422,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
               },
               onAnswerCorrect: () {
                 // Увеличьте счетчик правильных ответов
-                setState(() {
-                  correctAnswersCount++;
-                });
+                if(currentQuestionIndex < totalQuestionsCount){
+                  setState(() {
+                    correctAnswersCount++;
+                  });
+                }
               },
             ),
         ],
