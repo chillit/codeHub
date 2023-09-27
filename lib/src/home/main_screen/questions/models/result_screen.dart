@@ -16,7 +16,6 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  Color(0xFF002137),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
@@ -24,7 +23,7 @@ class ResultScreen extends StatelessWidget {
         actions: [
           IconButton(onPressed: (){
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
-          }, icon: Icon(Icons.close_sharp,color: Colors.white,))
+          }, icon: Icon(Icons.close_sharp,color: Colors.black,))
         ],
       ),
       body: Center(

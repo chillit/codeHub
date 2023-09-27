@@ -100,316 +100,328 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: isLoading?
       Center(child: CircularProgressIndicator(),):
-      ListView(
-        children: <Widget>[
-          const SizedBox(height: 38),
-          Column(
-            children: <Widget>[
-              InkWell(
-                onTap: () async {
-                  userLevel>=1?getPythonQuestions(0):null;
-                },
-                child: userLevel<1?
-                CircleAvatarIndicator(Color(0xFF808080),"assets/images/mark.png"):userLevel>1?
-                CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                CircleAvatarIndicator(Color(0xFF55acf3),
-                    "assets/images/home_screen/lesson_egg.png"),
+      Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/Back_white.png"), // Replace with your image asset path
+                fit: BoxFit.cover,
               ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(width: 110,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=2?getPythonQuestions(1):null;
-                    },
-                    child: Column(
+            ),
+            child: ListView(
+              children: <Widget>[
+                const SizedBox(height: 38),
+                Column(
+                  children: <Widget>[
+                    InkWell(
+                      onTap: () async {
+                        userLevel>=1?getPythonQuestions(0):null;
+                      },
+                      child: userLevel<1?
+                      CircleAvatarIndicator(Color(0xFF808080),"assets/images/mark.png"):userLevel>1?
+                      CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                      CircleAvatarIndicator(Color(0xFF55acf3),
+                          "assets/images/home_screen/lesson_egg.png"),
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        userLevel<2?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>2?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_dialog.png"),
+                        SizedBox(width: 110,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=2?getPythonQuestions(1):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<2?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>2?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_dialog.png"),
+
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 70,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=3?getPythonQuestions(2):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<3?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>3?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_airplane.png"),
+                            ],
+                          ),
+                        ),
 
                       ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 70,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=3?getPythonQuestions(2):null;
-                    },
-                    child: Column(
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        userLevel<3?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>3?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_airplane.png"),
+                        SizedBox(width: 120,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=4?getPythonQuestions(3):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<4?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>4?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_hamburger.png"),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(width: 120,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=4?getPythonQuestions(3):null;
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        userLevel<4?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>4?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_hamburger.png"),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 160,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=5?getPythonQuestions(4):null;
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        userLevel<5?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>5?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_baby.png"),
-                      ],
-                    ),
-                  ),
-
-                ],
-              ),
-              const SizedBox(height: 40),
-              InkWell(
-                onTap: () async {
-                  userLevel>=6?getPythonQuestions(5):null;
-                },
-                child: userLevel<6?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>6?
-                CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                CircleAvatarIndicator(Color(0xFF55acf3),
-                    "assets/images/home_screen/lesson_egg.png"),
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(width: 110,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=7?getPythonQuestions(6):null;
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        userLevel<7?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>7?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_dialog.png"),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 160,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=5?getPythonQuestions(4):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<5?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>5?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_baby.png"),
+                            ],
+                          ),
+                        ),
 
                       ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 70,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=8?getPythonQuestions(7):null;
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        userLevel<8?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>8?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_airplane.png"),
-                      ],
+                    const SizedBox(height: 40),
+                    InkWell(
+                      onTap: () async {
+                        userLevel>=6?getPythonQuestions(5):null;
+                      },
+                      child: userLevel<6?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>6?
+                      CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                      CircleAvatarIndicator(Color(0xFF55acf3),
+                          "assets/images/home_screen/lesson_egg.png"),
                     ),
-                  ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(width: 110,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=7?getPythonQuestions(6):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<7?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>7?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_dialog.png"),
 
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(width: 120,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=9?getPythonQuestions(8):null;
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        userLevel<9?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>9?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_hamburger.png"),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 160,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=10?getPythonQuestions(9):null;
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        userLevel<10?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>10?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_baby.png"),
-                      ],
-                    ),
-                  ),
-
-                ],
-              ),
-              const SizedBox(height: 40),
-              InkWell(
-                onTap: () async {
-                  userLevel>=11?getPythonQuestions(10):null;
-                },
-                child: userLevel<11?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>11?
-                CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                CircleAvatarIndicator(Color(0xFF55acf3),
-                    "assets/images/home_screen/lesson_egg.png"),
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(width: 110,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=12?getPythonQuestions(11):null;
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        userLevel<12?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>12?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_dialog.png"),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 70,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=8?getPythonQuestions(7):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<8?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>8?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_airplane.png"),
+                            ],
+                          ),
+                        ),
 
                       ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 70,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=13?getPythonQuestions(12):null;
-                    },
-                    child: Column(
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        userLevel<13?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>13?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_airplane.png"),
+                        SizedBox(width: 120,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=9?getPythonQuestions(8):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<9?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>9?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_hamburger.png"),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 160,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=10?getPythonQuestions(9):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<10?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>10?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_baby.png"),
+                            ],
+                          ),
+                        ),
 
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(width: 120,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=14?getPythonQuestions(13):null;
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        userLevel<14?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>14?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_hamburger.png"),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 160,),
-                  InkWell(
-                    onTap: () async {
-                      userLevel>=15?getPythonQuestions(14):null;
-                    },
-                    child: Column(
+                    const SizedBox(height: 40),
+                    InkWell(
+                      onTap: () async {
+                        userLevel>=11?getPythonQuestions(10):null;
+                      },
+                      child: userLevel<11?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>11?
+                      CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                      CircleAvatarIndicator(Color(0xFF55acf3),
+                          "assets/images/home_screen/lesson_egg.png"),
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        userLevel<15?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>15?
-                        CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
-                        CircleAvatarIndicator(Color(0xFF55acf3),
-                            "assets/images/home_screen/lesson_baby.png"),
+                        SizedBox(width: 110,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=12?getPythonQuestions(11):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<12?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>12?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_dialog.png"),
+
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 70,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=13?getPythonQuestions(12):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<13?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>13?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_airplane.png"),
+                            ],
+                          ),
+                        ),
 
-                ],
-              ),
-              const SizedBox(height: 40),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(width: 120,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=14?getPythonQuestions(13):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<14?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>14?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_hamburger.png"),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 160,),
+                        InkWell(
+                          onTap: () async {
+                            userLevel>=15?getPythonQuestions(14):null;
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              userLevel<15?CircleAvatarIndicator(Color(0xFF808080),"assets/images/lock.png"):userLevel>15?
+                              CircleAvatarIndicator(Color(0xFFFFFF00),"assets/images/mark.png"):
+                              CircleAvatarIndicator(Color(0xFF55acf3),
+                                  "assets/images/home_screen/lesson_baby.png"),
+                            ],
+                          ),
+                        ),
 
-              Row(crossAxisAlignment: CrossAxisAlignment.end, children: <
-                  Widget>[
-                Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.only(left: 10, right: 15),
-                      child: Divider(
-                        color: Colors.black,
-                        height: 50,
-                      )),
+                      ],
+                    ),
+                    const SizedBox(height: 40),
+
+                    Row(crossAxisAlignment: CrossAxisAlignment.end, children: <
+                        Widget>[
+                      Expanded(
+                        child: Container(
+                            margin: const EdgeInsets.only(left: 10, right: 15),
+                            child: Divider(
+                              color: Colors.black,
+                              height: 50,
+                            )),
+                      ),
+                      Image.asset(
+                        "assets/images/home_screen/lesson_divisor_castle.png",
+                        height: 85,
+                      ),
+                      Expanded(
+                        child: Container(
+                            margin: const EdgeInsets.only(left: 15, right: 10),
+                            child: Divider(
+                              color: Colors.black,
+                              height: 50,
+                            )),
+                      ),
+                    ]),
+                  ],
                 ),
-                Image.asset(
-                  "assets/images/home_screen/lesson_divisor_castle.png",
-                  height: 85,
-                ),
-                Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.only(left: 15, right: 10),
-                      child: Divider(
-                        color: Colors.black,
-                        height: 50,
-                      )),
-                ),
-              ]),
-            ],
+              ],
+            ),
           ),
         ],
       ),
