@@ -192,29 +192,31 @@ class _RankingState extends State<Ranking> {
                           final rankNumber = index + 1;
                           final isCurrentUser = userName == currentUsername;
 
-                          return ListTile(
-                            tileColor: isCurrentUser ? Colors.green.withOpacity(0.25) : null,
-                            leading: Container(
-                              width: 80.0,
-                              child: Row(
-                                children: [
-                                  Text('$rankNumber',style: TextStyle(fontSize: 15,fontFamily: 'Feather'),),
-                                  SizedBox(width: 8,),
-                                  Image.asset(
-                                    userPoints>=400?"assets/images/ranks/r.png":userPoints>=350?"assets/images/ranks/i.png":userPoints>=300?"assets/images/ranks/a.png":userPoints>=250?"assets/images/ranks/d.png":userPoints>=200?"assets/images/ranks/p.png":userPoints>=150?"assets/images/ranks/g.png":userPoints>=100?"assets/images/ranks/s.png":userPoints>=50?"assets/images/ranks/b.png":"assets/images/ranks/ir.png",
-                                  ),
-                                ],
+                          return Container(
+                            color: isCurrentUser ? Colors.green.withOpacity(0.25) : null,
+                            child: ListTile(
+                              leading: Container(
+                                width: 80.0,
+                                child: Row(
+                                  children: [
+                                    Text('$rankNumber',style: TextStyle(fontSize: 15,fontFamily: 'Feather'),),
+                                    SizedBox(width: 8,),
+                                    Image.asset(
+                                      userPoints>=400?"assets/images/ranks/r.png":userPoints>=350?"assets/images/ranks/i.png":userPoints>=300?"assets/images/ranks/a.png":userPoints>=250?"assets/images/ranks/d.png":userPoints>=200?"assets/images/ranks/p.png":userPoints>=150?"assets/images/ranks/g.png":userPoints>=100?"assets/images/ranks/s.png":userPoints>=50?"assets/images/ranks/b.png":"assets/images/ranks/ir.png",
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            title: Text(userName,style: TextStyle(
-                                color: isCurrentUser ? Colors.green : null,
+                              title: Text(userName,style: TextStyle(
+                                  color: isCurrentUser ? Colors.green : null,
+                                  fontSize: 15,
+                                  fontFamily: 'Feather'
+                              ),),
+                              trailing: Text('$userPoints points',style: TextStyle(
+                                fontFamily: 'Feather',
                                 fontSize: 15,
-                                fontFamily: 'Feather'
-                            ),),
-                            trailing: Text('$userPoints points',style: TextStyle(
-                              fontFamily: 'Feather',
-                              fontSize: 15,
-                            ),),
+                              ),),
+                            ),
                           );
                         },
                       ),
