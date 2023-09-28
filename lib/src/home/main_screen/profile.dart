@@ -53,10 +53,7 @@ class _ProfileState extends State<Profile> {
                   question: (mistakeData['question'] ?? ''), // Начиная с третьего символа
                   options: List<String>.from(mistakeData['options'] ?? []),
                   correctAnswerIndex: mistakeData['correctAnswerIndex'] ?? 0,
-                  questionType: QuestionType.values.firstWhere(
-                        (e) => e.toString() == mistakeData['questionType'],
-                    orElse: () => QuestionType.multipleChoice, // Предоставьте значение по умолчанию
-                  ),
+                  questionType: mistakeData['questionType']=="textInput"?QuestionType.textInput:QuestionType.multipleChoice ?? "",
                   correctInputAns: mistakeData['correctInputAns'] ?? '',
                 ),
               ),
@@ -78,6 +75,7 @@ class _ProfileState extends State<Profile> {
 
 
   void _showQuestionDialog(Question question) {
+    print(question.questionType);
     showDialog(
       context: context,
       builder: (context) {
