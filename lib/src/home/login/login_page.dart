@@ -9,6 +9,151 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+
+  String buttonText = 'The free, fun, and \n effective way to learn  programming!'; // Initial button text
+  String language="en";
+  String FirstText ='GET STARTED';
+  String SecondText ='ALREADY HAVE AN ACCOUNT';
+
+  void changeButtonTexttoRu() {
+    setState(() {
+      FirstText='НАЧАТЬ';
+      SecondText='УЖЕ ЕСТЬ АККАУНТ?';
+      buttonText = 'Бесплатный, веселый и \n эффективный способ обучения программированию!';
+      language='ru';// Change the button text here
+    });
+  }
+
+  void changeButtonTexttoKz() {
+    setState(() {
+      FirstText='BASTAU';
+      SecondText="SIZDE ESEPTIK JAZBA BAR?";
+      buttonText = 'Baǵdarlamalaýdy úırenýdiń \n tegin, kóńildi jáne tıimdi ádisi!';
+      language='kz';// Change the button text here
+    });
+  }
+  void changeButtonTexttoEn() {
+    setState(() {
+      FirstText='GET STARTED';
+      SecondText ='ALREADY HAVE AN ACCOUNT';
+      buttonText = "The free, fun, and \n effective way to learn  programming!";
+      language='en';// Change the button text here
+    });
+  }
+
+  void _showResultDialog() {
+
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      enableDrag: true,// Запрещаем закрытие при нажатии вне окна
+      builder: (BuildContext context) {
+        return Container(height: 250,
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed:
+                      (){
+                    setState(() {
+                      changeButtonTexttoEn();
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('English',style: TextStyle(
+                      fontFamily: 'Feather',
+                      fontSize: 16
+                  ),),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF7e7e94),
+                    onPrimary: Colors.white, // text color
+                    elevation: 5, // shadow elevation// button padding
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14), // button border radius
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20,),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed:
+                      (){
+                    setState(() {
+                      changeButtonTexttoRu();
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Russian',style: TextStyle(
+                      fontFamily: 'Feather',
+                      fontSize: 16
+                  ),),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF7e7e94),
+                    onPrimary: Colors.white, // text color
+                    elevation: 5, // shadow elevation// button padding
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14), // button border radius
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20,),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed:
+                      (){
+                    setState(() {
+                      changeButtonTexttoKz();
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Kazakh',style: TextStyle(
+                      fontFamily: 'Feather',
+                      fontSize: 16
+                  ),),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF7e7e94),
+                    onPrimary: Colors.white, // text color
+                    elevation: 5, // shadow elevation// button padding
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14), // button border radius
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+        );
+      },
+    );
+  }
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return
@@ -30,16 +175,24 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/LOGO_MAIN.png',height: 150,width: MediaQuery.of(context).size.width,)],
+                    Image.asset('assets/images/LOGO_MAIN.png',height: 150,width: MediaQuery.of(context).size.width,),],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(onPressed: (){
+                      _showResultDialog();
+                    }, icon: Icon(Icons.language,color: Colors.grey,))
+                  ]
                 ),
                 Image.asset('assets/images/Backend.gif',height: 280,width: 500,),
                 SizedBox(height: 20,),
 
-                Text('The free, fun, and \n effective way to learn  programming!',
+                Text(buttonText,
                 style: TextStyle(
-                  fontFamily: 'Feather',
+                  fontFamily: language=='ru'?"Geo":'Feather',
                   fontWeight: FontWeight.bold,
-                  fontSize: 32,
+                  fontSize: language=='ru'?27:32,
                   color: Colors.black54
                 ),
                     textAlign: TextAlign.center
@@ -62,9 +215,9 @@ class _LoginPageState extends State<LoginPage> {
                         (){
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ChooseLanguage()));
                         },
-                    child: Text('GET STARTED',
+                    child: Text(FirstText,
                     style: TextStyle(
-                      fontFamily: 'Feather',
+                      fontFamily: language=='ru'?"Geo":'Feather',
                       fontSize: 13,
                       color: Color.fromRGBO(221,196,173, 1),
                     ),),
@@ -95,9 +248,9 @@ class _LoginPageState extends State<LoginPage> {
                         (){
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LogINaccount()));
                         },
-                    child: Text('ALREADY HAVE AN ACCOUNT?',style:
+                    child: Text(SecondText,style:
                       TextStyle(
-                        fontFamily: 'Feather',
+                        fontFamily: language=='ru'?"Geo":'Feather',
                         fontSize: 13,
                         color: Color.fromRGBO(221,196,173, 1),
                       ),),
