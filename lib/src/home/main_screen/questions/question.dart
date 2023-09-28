@@ -249,11 +249,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
     databaseReference.child('users/$currentUserUID/level').once().then((DatabaseEvent snapshot) {
 
-      int currentLvl = snapshot.snapshot.value ?? 0; // Если значение не существует, устанавливаем 0
-
-      currentLvl == widget.level?databaseReference.child('users/$currentUserUID/level').set(widget.level+1):null;
+      int currentLvl = snapshot.snapshot.value ?? 1; // Если значение не существует, устанавливаем 0
       if (currentLvl == widget.level+1){
-        databaseReference.child('users/$currentUserUID/level').set(widget.level+1);
+        databaseReference.child('users/$currentUserUID/level').set(widget.level+2);
         updatePointsInFirebase(currentUserUID, 50);
 
       }
